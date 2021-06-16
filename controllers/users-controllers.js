@@ -1,5 +1,5 @@
-//https://stackoverflow.com/questions/29320201/error-installing-bcrypt-with-npm 
-
+//jshint esversion:6
+//https://stackoverflow.com/questions/29320201/error-installing-bcrypt-with-npm
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -67,14 +67,14 @@ const signup = async (req, res, next) => {
 		email,
 		// image: req.file.path,
 		password: hashedPassword,
-		places: [],
+		todos: [],
 	});
 
 	try {
 		await createdUser.save();
 	} catch (err) {
 		const error = new HttpError(
-			"Signing up failed, please try again later.",
+			"Signing up failed, please try again later. " + err,
 			500
 		);
 		return next(error);

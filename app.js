@@ -11,7 +11,7 @@ const session = require("express-session");
 const passport = require("passport");
 // const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
-const placesRoutes = require("./routes/places-routes");
+const todoRoutes = require("./routes/todo-routes");
 const usersRoutes = require("./routes/users-routes");
 const connectDB = require("./config/db");
 const notes = require("./router/notes");
@@ -66,7 +66,7 @@ passport.deserializeUser(function (id, done) {
 connectDB();
 
 app.use("/api", notes);
-app.use("/api/places", placesRoutes);
+app.use("/api/todo", todoRoutes);
 app.use("/api/users", usersRoutes);
 
 app.get("/", (req, res) => res.send("server by sunpochin@gmail.com"));
@@ -93,4 +93,3 @@ httpsServer.listen(httpsPort, () => {
 });
 
 module.exports = app;
-

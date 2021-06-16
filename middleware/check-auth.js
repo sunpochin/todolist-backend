@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
 		console.log("req headers: ", req.headers);
 		const token = req.headers.authorization.split(" ")[1];
 		if (!token) {
-			throw Error("Ayth failed", 401);
+			throw Error("Auth failed", 401);
 		}
 		const decodedToken = jwt.verify(token, "dontshare");
 		req.userData = { userId: decodedToken.userId };
