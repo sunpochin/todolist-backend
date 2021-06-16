@@ -1,3 +1,5 @@
+//jshint esversion:6
+
 const express = require('express');
 const { check } = require('express-validator');
 
@@ -10,7 +12,7 @@ router.get('/', usersController.getUsers);
 
 router.post(
   '/signup',
-  fileUpload.single('image'),
+  // fileUpload.single('image'),
   [
     check('name')
       .not()
