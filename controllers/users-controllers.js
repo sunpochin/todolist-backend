@@ -1,5 +1,7 @@
 //jshint esversion:6
+
 //https://stackoverflow.com/questions/29320201/error-installing-bcrypt-with-npm
+
 const {
   validationResult
 } = require("express-validator");

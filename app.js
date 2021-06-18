@@ -65,9 +65,9 @@ passport.deserializeUser(function (id, done) {
 // Connect Database
 connectDB();
 
-app.use("/api", notes);
-app.use("/api/todo", todoRoutes);
-app.use("/api/users", usersRoutes);
+// app.use("/api", notes);
+app.use("/todos", todoRoutes);
+app.use("/", usersRoutes);
 
 app.get("/", (req, res) => res.send("server by sunpochin@gmail.com"));
 

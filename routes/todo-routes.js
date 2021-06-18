@@ -8,14 +8,14 @@ const fileUpload = require('../middleware/file-upload');
 const checkAuth = require('../middleware/check-auth');
 const router = express.Router();
 
-router.get('/:pid', todoControllers.getTodoById);
-// We are supposed to see any todo of any user, so Don't need to use uid from token here. If we use uid from token, we would only be able to see user's own todo.
-router.get('/user/:uid', todoControllers.getTodosByUserId);
+// router.use(checkAuth);
 
-router.use(checkAuth);
+// We are supposed to ONLY see all todos of the logging user, so Need to use uid from token here.
+router.get('/list/:uid', todoControllers.getTodosByUserId);
+router.get('/:pid', todoControllers.getTodoById);
 
 router.post(
-  '/',
+  '/add',
   [
     check('title')
       .not()
@@ -26,7 +26,7 @@ router.post(
 );
 
 router.patch(
-  '/:pid',
+  '/update/:pid',
   [
     check('title')
       .not()
@@ -36,6 +36,6 @@ router.patch(
   todoControllers.updateTodo
 );
 
-router.delete('/:pid', todoControllers.deleteTodo);
+router.delete('/del/:pid', todoControllers.deleteTodo);
 
 module.exports = router;
