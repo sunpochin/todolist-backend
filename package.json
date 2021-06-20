@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node index.js",
     "app": "env-cmd -f ./config/dev.env nodemon index.js",
-    "test": "env-cmd -f ./config/dev.env jest --watch"
+    "test": "env-cmd -f ./config/dev.env jest --coverage"
   },
   "jest": {
     "testEnvironment": "node"
