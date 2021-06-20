@@ -7,7 +7,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "env-cmd -f ./config/atlas.env node index.js",
     "app": "env-cmd -f ./config/dev.env nodemon index.js",
     "test": "env-cmd -f ./config/dev.env jest --coverage"
   },

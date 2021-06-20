@@ -171,6 +171,7 @@ const updateTodo = async (req, res, next) => {
 
 const deleteTodo = async (req, res, next) => {
 	const todoId = req.params.pid;
+	console.log('req.params: ', req.params, ', req.userData: ', req.userData);
 
 	let todo;
 	try {

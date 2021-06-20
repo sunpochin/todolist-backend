@@ -1,6 +1,5 @@
 //jshint esversion:6
 // db.js
-require("dotenv").config();
 const mongoose = require("mongoose");
 const config = require("config");
 const User = require('../models/user');
@@ -12,7 +11,7 @@ const User = require('../models/user');
 // 	":" +
 // 	process.env.MONGODB_PASSWORD +
 // 	process.env.MONGODB_URI;
-const mongoURI = "mongodb://" + process.env.MONGODB_URI;
+const mongoURI = process.env.MONGODB_URI;
 
 const connectDB = async() => {
   console.log("mongoURI: ", mongoURI);
@@ -22,7 +21,7 @@ const connectDB = async() => {
 			useUnifiedTopology: true,
 			useCreateIndex: true,
 		});
-		console.log("MongoDB is Connected...");
+		// console.log("MongoDB is Connected...");
 	} catch (err) {
 		console.error(err.message);
 		process.exit(1);

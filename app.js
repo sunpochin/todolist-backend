@@ -1,6 +1,5 @@
 //jshint esversion:6
 // app.js
-require("dotenv").config();
 require("./db/mongoose");
 const cors = require("cors");
 const express = require("express");
@@ -8,17 +7,9 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const passport = require("passport");
 // const GoogleStrategy = require('passport-google-oauth20').Strategy;
-
 const todoRoutes = require("./routes/todo-routes");
 const usersRoutes = require("./routes/users-routes");
-const notes = require("./router/notes");
 const User = require("./models/user.js");
-const register = require("./router/register");
-
-
-// Connect Database
-// connectDB();
-
 const app = express();
 
 app.use(cors({ origin: true, credentials: true }));
@@ -64,7 +55,6 @@ passport.deserializeUser(function (id, done) {
 // ));
 
 
-// app.use("/api", notes);
 app.use("/todos", todoRoutes);
 app.use("/", usersRoutes);
 
