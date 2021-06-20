@@ -1,6 +1,7 @@
 //jshint esversion:6
 // app.js
 require("dotenv").config();
+require("./db/mongoose");
 const cors = require("cors");
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -13,6 +14,10 @@ const usersRoutes = require("./routes/users-routes");
 const notes = require("./router/notes");
 const User = require("./models/user.js");
 const register = require("./router/register");
+
+
+// Connect Database
+// connectDB();
 
 const app = express();
 
@@ -64,10 +69,5 @@ app.use("/todos", todoRoutes);
 app.use("/", usersRoutes);
 
 app.get("/", (req, res) => res.send("server by sunpochin@gmail.com"));
-
-const connectDB = require("./config/db");
-// Connect Database
-connectDB();
-
 
 module.exports = app;
