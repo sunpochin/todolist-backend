@@ -185,7 +185,7 @@ const deleteTodo = async (req, res, next) => {
 	}
 
 	if (!todo) {
-		const error = new HttpError("Could not find todo for this id.", 404);
+		const error = new HttpError("Could not find todo for this id. " + error, 404);
 		return next(error);
 	}
 
@@ -197,7 +197,7 @@ const deleteTodo = async (req, res, next) => {
 		return next(error);
 	}
 
-	const imagePath = todo.image;
+	// const imagePath = todo.image;
 
 	try {
 		const sess = await mongoose.startSession();
@@ -214,9 +214,9 @@ const deleteTodo = async (req, res, next) => {
 		return next(error);
 	}
 
-	fs.unlink(imagePath, (err) => {
-		console.log(err);
-	});
+	// fs.unlink(imagePath, (err) => {
+	// 	console.log(err);
+	// });
 
 	res.status(200).json({ message: "Deleted todo." });
 };
