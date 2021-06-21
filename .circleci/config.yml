@@ -4,9 +4,6 @@ jobs:
   run_jest_tests:
     docker:
       - image: cimg/node:15.1
-      - image: circleci/mongo:4.4.1
-        environment:
-          DATABASE_URL: mongodb://localhost/?
 
     steps:
       - checkout
