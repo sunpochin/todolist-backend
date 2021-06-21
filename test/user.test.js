@@ -16,7 +16,7 @@ const haha = async function(password) {
 		hashedPassword = await bcrypt.hash(password, salt);
 	} catch (err) {
 		console.log('err: ', err);
-		
+
 		// return next(error);
 	}
 	return hashedPassword;
@@ -41,7 +41,7 @@ beforeEach(async () => {
 	});
 
 	await new User(userOne).save();
-});
+}, 30000);
 
 afterEach(() => {
 	console.log("after each");
