@@ -1,5 +1,5 @@
 version: 2.1
-
+# example https://stackoverflow.com/a/65001814/720276
 jobs:
   run_jest_tests:
     docker:
@@ -19,16 +19,6 @@ jobs:
           key: node-deps-v1-{{ .Branch }}-{{checksum "package-lock.json"}}
           paths:
             - ~/.npm
-      - run:
-          name: Waiting for MongoDB to be ready
-          command: |
-            for i in `seq 1 30`;
-            do
-              nc -z localhost 27017 && echo Success && exit 0
-              echo -n .
-              sleep 1
-            done
-            echo Failed waiting for MongoDB && exit 1
       - run:
           name: Run Tests
           command: npm run test
