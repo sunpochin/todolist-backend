@@ -42,4 +42,4 @@ jobs:
 workflows:
   orb-free-workflow:
     jobs:
-      - test
+      - run_jest_tests
