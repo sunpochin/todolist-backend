@@ -1,9 +1,13 @@
 version: 2.1
 
 jobs:
-  test:
+  run_jest_tests:
     docker:
       - image: cimg/node:15.1
+      - image: circleci/mongo:4.4.1
+        environment:
+          DATABASE_URL: mongodb://localhost/?
+
     steps:
       - checkout
       - restore_cache:
@@ -19,9 +23,22 @@ jobs:
           paths:
             - ~/.npm
       - run:
+          name: Waiting for MongoDB to be ready
+          command: |
+            for i in `seq 1 30`;
+            do
+              nc -z localhost 27017 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for MongoDB && exit 1
+      - run:
           name: Run Tests
           command: npm run test
-
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results
 workflows:
   orb-free-workflow:
     jobs:

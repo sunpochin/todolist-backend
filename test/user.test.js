@@ -41,7 +41,7 @@ beforeEach(async () => {
 	});
 
 	await new User(userOne).save();
-}, 30000);
+}, 10000);
 
 afterEach(() => {
 	console.log("after each");
