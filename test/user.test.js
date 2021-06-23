@@ -9,7 +9,7 @@ const User = require("../models/user");
 
 let password = "1234567";
 // duplicated codes
-const haha = async function(password) {
+const hashpassword = async function(password) {
 	let hashedPassword;
 	try {
 		const salt = 12;
@@ -25,7 +25,7 @@ const haha = async function(password) {
 let userOne;
 let hashedPassword;
 beforeEach(async () => {
-	hashedPassword = await haha(password);
+	hashedPassword = await hashpassword(password);
 	console.log('hashedPassword: ', hashedPassword);
 		userOne = {
 		name: "test user",
@@ -47,10 +47,10 @@ afterEach(() => {
 	console.log("after each");
 });
 
-test("Get /", async () => {
-	console.log("test get /");
-	await request(app).get("/").expect(200);
-});
+// test("Get /", async () => {
+// 	console.log("test get /");
+// 	await request(app).get("/").expect(200);
+// });
 
 test("Should login an existing user", async () => {
 	await request(app)
@@ -60,6 +60,16 @@ test("Should login an existing user", async () => {
 			password: '1234567',
 		})
 		.expect(200);
+});
+
+test("Should NOT login due to wrong password", async () => {
+	await request(app)
+		.post("/login")
+		.send({
+			email: userOne.email,
+			password: 'xxxxxxxxxx',
+		})
+		.expect(403);
 });
 
 test("Should signup a new user", async () => {
