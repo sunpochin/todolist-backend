@@ -9,9 +9,11 @@
   "scripts": {
     "start": "env-cmd -f ./config/atlas.env node index.js",
     "app": "env-cmd -f ./config/dev.env nodemon index.js",
-    "test": "env-cmd -f ./config/dev.env jest --coverage"
+    "test": "env-cmd -f ./config/test.json jest --coverage",
+    "watchtest": "env-cmd -f ./config/test.json jest --watch --detectOpenHandles"
   },
   "jest": {
+    "setupFiles": ["./test/helpers.js"],
     "testEnvironment": "node"
   },
   "author": "",

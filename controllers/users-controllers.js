@@ -116,7 +116,7 @@ const signup = async (req, res, next) => {
     );
     return next(error);
   }
-  console.log('sign up token: ', token);
+  // console.log('sign up token: ', token);
   res
     .status(201)
     .json({

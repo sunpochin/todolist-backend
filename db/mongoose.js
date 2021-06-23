@@ -1,4 +1,4 @@
-//jshint esversion:6
+//jshint esversion:9
 // db.js
 const mongoose = require("mongoose");
 const config = require("config");
@@ -27,5 +27,4 @@ const connectDB = async() => {
 		process.exit(1);
 	}
 };
-connectDB();
-// module.exports = connectDB;
+module.exports = { connectDB };
