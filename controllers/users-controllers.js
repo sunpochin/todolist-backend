@@ -55,18 +55,20 @@ const signup = async (req, res, next) => {
   }
 
   if (existingUser) {
-    const error = new HttpError(
-      "User exists already, please login instead.",
-      422
-    );
+    // const error = new HttpError(
+    //   "User exists already, please login instead.",
+    //   422
+    // );
     // return next(error);
-    // res
-    //   .status(422)
-    //   .json({
-    //     error: 'Already existed user',
-    //     email: existingUser.email
-    //   });
-    return next(error);
+    const errmsg = 'Already existed user';
+    console.log(errmsg);
+    res
+      .status(422)
+      .json({
+        error: errmsg,
+        email: existingUser.email
+      });
+      return;
   }
 
   let hashedPassword;
