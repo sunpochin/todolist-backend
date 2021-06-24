@@ -1,6 +1,6 @@
 //jshint esversion:6
 // app.js
-require("./db/mongoose");
+const mongoose = require("./db/mongoose");
 const cors = require("cors");
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -12,6 +12,7 @@ const usersRoutes = require("./routes/users-routes");
 const User = require("./models/user.js");
 const app = express();
 
+mongoose.connectDB();
 app.use(cors({ origin: true, credentials: true }));
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));

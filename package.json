@@ -9,9 +9,11 @@
   "scripts": {
     "start": "env-cmd -f ./config/atlas.env node index.js",
     "app": "env-cmd -f ./config/dev.env nodemon index.js",
-    "test": "env-cmd -f ./config/dev.env jest --coverage"
+    "test": "env-cmd -f ./config/test.json jest --coverage",
+    "watchtest": "env-cmd -f ./config/test.json jest --watch --detectOpenHandles"
   },
   "jest": {
+    "setupFiles": ["./test/helpers.js"],
     "testEnvironment": "node"
   },
   "author": "",
@@ -28,7 +30,8 @@
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "express-validator": "^6.12.0",
-    "jest": "^23.6.0",
+    "handlebars": "^4.7.7",
+    "jest": "^27.0.5",
     "jsonwebtoken": "^8.5.1",
     "md5": "^2.3.0",
     "mocha": "^9.0.1",

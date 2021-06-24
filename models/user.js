@@ -24,7 +24,5 @@ userSchema.plugin(findOrCreate);
 
 // module.exports = mongoose.model('User', userSchema);
 const User = new mongoose.model('User', userSchema);
-
-console.log('new mongoose.model("User"');
-
+// console.log('new mongoose.model("User"');
 module.exports = User

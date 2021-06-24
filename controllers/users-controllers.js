@@ -55,18 +55,20 @@ const signup = async (req, res, next) => {
   }
 
   if (existingUser) {
-    const error = new HttpError(
-      "User exists already, please login instead.",
-      422
-    );
+    // const error = new HttpError(
+    //   "User exists already, please login instead.",
+    //   422
+    // );
     // return next(error);
-    // res
-    //   .status(422)
-    //   .json({
-    //     error: 'Already existed user',
-    //     email: existingUser.email
-    //   });
-    return next(error);
+    const errmsg = 'Already existed user';
+    console.log(errmsg);
+    res
+      .status(422)
+      .json({
+        error: errmsg,
+        email: existingUser.email
+      });
+      return;
   }
 
   let hashedPassword;
@@ -116,7 +118,7 @@ const signup = async (req, res, next) => {
     );
     return next(error);
   }
-  console.log('sign up token: ', token);
+  // console.log('sign up token: ', token);
   res
     .status(201)
     .json({
@@ -146,30 +148,50 @@ const login = async (req, res, next) => {
   }
 
   if (!existingUser) {
-    const error = new HttpError(
-      "Invalid credentials, could not log you in.",
-      401
-    );
-    return next(error);
+    // const error = new HttpError(
+    //   "Invalid credentials, could not log you in.",
+    //   401
+    // );
+    // next(error);
+    const errmsg = 'user not exist';
+    console.log(errmsg);
+    res
+      .status(401)
+      .json({
+        error: errmsg,
+      });
+    return;
   }
 
   let isValidPassword = false;
   try {
     isValidPassword = await bcrypt.compare(password, existingUser.password);
   } catch (err) {
-    const error = new HttpError(
-      "could not login, please check credentials.",
-      500
-    );
-    return next(error);
+    // const error = new HttpError(
+    //   "could not login, please check credentials." + err,
+    //   500
+    // );
+    // return next(error);
+    const errmsg = 'password error: ' + err;
+    console.log(errmsg);
+    res
+      .status(500)
+      .json({
+        msg: errmsg,
+      });
+    return;
   }
 
   if (!isValidPassword) {
-    const error = new HttpError(
-      "Invalid credentials, could not log you in. " ,
-      403
-    );
-    return next(error);
+    res.status(403).json({
+      error: 'wrong password'
+    });
+    return next();
+    // const error = new HttpError(
+    //   "Invalid credentials, could not log you in. " ,
+    //   403
+    // );
+    // return next(error);
   }
 
   let token;
