@@ -11,7 +11,8 @@ const User = require('../models/user');
 // 	":" +
 // 	process.env.MONGODB_PASSWORD +
 // 	process.env.MONGODB_URI;
-const mongoURI = process.env.MONGODB_URI;
+const mongoURI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/api-test?retryWrites=false";
+
 
 const connectDB = async() => {
   console.log("mongoURI: ", mongoURI);

@@ -13,12 +13,15 @@
     "watchtest": "env-cmd -f ./config/test.json jest --watch --detectOpenHandles"
   },
   "jest": {
-    "setupFiles": ["./test/helpers.js"],
+    "setupFiles": [
+      "./test/helpers.js"
+    ],
     "testEnvironment": "node"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@cucumber/cucumber": "^7.3.0",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",

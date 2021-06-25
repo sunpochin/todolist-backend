@@ -6,45 +6,48 @@ const db = require("../db/mongoose");
 
 const app = require("../app");
 const User = require("../models/user");
-let userOne;
+
 // let hashedPassword;
-const hashpassword = async function(password) {
+const hashpassword = async function (password) {
 	let hashedPassword;
 	try {
 		const salt = 12;
 		hashedPassword = await bcrypt.hash(password, salt);
 	} catch (err) {
-		console.log('err: ', err);
+		console.log("err: ", err);
 		// return next(error);
 	}
 	return hashedPassword;
 };
 
-global.createTestUser = async() => {
-  const password = "1234567";
+global.createTestUser = async () => {
+	const password = "1234567";
 	const hashedPassword = await hashpassword(password);
-	console.log('hashedPassword: ', hashedPassword);
+	console.log("hashedPassword: ", hashedPassword);
 	userOne = {
 		name: "test user",
 		email: "testuser@ab.com",
-		password: hashedPassword
+		password: hashedPassword,
 	};
 	mongoose.connection.collections["users"].drop(function (err) {
 		// console.log("collection dropped");
 	});
 	createRet = await new User(userOne).save();
-  console.log('createRet: ', createRet);
-  return [userOne, createRet];
+	console.log("createRet: ", createRet);
+	return [userOne, createRet];
 };
 
-global.loginTestUser = async() => {
-  loginRet = await request(app)
-    .post("/login")
-    .send({
-      email: userOne.email,
-      password: '1234567',
-    })
-    .expect(200);
-  console.log('loginRet: ', loginRet.body);
-  return [loginRet];
+global.loginTestUser = async () => {
+	loginRet = await request(app)
+		.post("/login")
+		.send({
+			email: userOne.email,
+			password: "1234567",
+		})
+		.expect(200);
+	console.log("loginRet: ", loginRet.body);
+	return [loginRet];
 };
+
+module.exports.createTestUser = createTestUser;
+module.exports.loginTestUser = loginTestUser;
