@@ -50,10 +50,3 @@ Then('I should see {string}', function (string) {
 
 });
 
-// Given("I go to '/login'", async () => {
-// 	// return fetch("http://localhost:3000/api/endpoint")
-// 	// 	.then((res) => res.json())
-// 	// 	.then((body) => doSomethingWithResponse(body));
-// });
-
-module.exports = { default: "--publish-quiet" };

@@ -37,7 +37,6 @@ const signup = async (req, res, next) => {
     );
   }
   const {
-    name,
     email,
     password
   } = req.body;
@@ -48,7 +47,7 @@ const signup = async (req, res, next) => {
     });
   } catch (err) {
     const error = new HttpError(
-      "Signing up failed, please try again later.",
+      "Signing up failed, please try again later. " + err,
       500
     );
     return next(error);
@@ -84,7 +83,6 @@ const signup = async (req, res, next) => {
   }
 
   const createdUser = new User({
-    name,
     email,
     // image: req.file.path,
     password: hashedPassword,

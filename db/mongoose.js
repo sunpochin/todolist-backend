@@ -14,18 +14,33 @@ const User = require('../models/user');
 const mongoURI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/api-test?retryWrites=false";
 
 
-const connectDB = async() => {
-  console.log("mongoURI: ", mongoURI);
-	try {
-		await mongoose.connect(mongoURI, {
-			useNewUrlParser: true,
-			useUnifiedTopology: true,
-			useCreateIndex: true,
-		});
-		// console.log("MongoDB is Connected...");
-	} catch (err) {
-		console.error(err.message);
-		process.exit(1);
-	}
+const connectDB = async () => {
+  console.log("trying to connect mongoURI: ", mongoURI);
+  try {
+    await mongoose.connect(mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    });
+    console.log("MongoDB is Connected...");
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
 };
-module.exports = { connectDB };
+
+const closeDB = async () => {
+  console.log("mongoURI: ", mongoURI);
+  try {
+    await mongoose.connection.close();
+    console.log("MongoDB is disconnected");
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
+};
+
+module.exports = {
+  connectDB,
+  closeDB
+};
