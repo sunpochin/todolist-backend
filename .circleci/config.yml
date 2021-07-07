@@ -35,7 +35,7 @@ jobs:
             echo Failed waiting for MongoDB && exit 1
       - run:
           name: Run Tests
-          command: npm run test
+          command: npm run circle
       - store_test_results:
           path: test-results
       - store_artifacts:
