@@ -1,8 +1,7 @@
 //jshint esversion:9
 const request = require("supertest");
 const bcrypt = require("bcryptjs");
-const mongoose = require("mongoose");
-const db = require("../src/db/mongoose");
+const db = require("mongoose");
 
 const app = require("../src/app");
 const User = require("../src/models/user");
@@ -29,9 +28,9 @@ global.createTestUser = async () => {
 		email: "testuser@ab.com",
 		password: hashedPassword,
 	};
-	mongoose.connection.collections["users"].drop(function (err) {
-		// console.log("collection dropped");
-	});
+	// db.connection.collections["users"].drop(function (err) {
+	// 	console.log("collection dropped");
+	// });
 	createRet = await new User(userOne).save();
 	console.log("createRet: ", createRet);
 	return [userOne, createRet];
@@ -49,5 +48,5 @@ global.loginTestUser = async () => {
 	return [loginRet];
 };
 
-module.exports.createTestUser = createTestUser;
-module.exports.loginTestUser = loginTestUser;
+// module.exports.createTestUser = createTestUser;
+// module.exports.loginTestUser = loginTestUser;

@@ -12,16 +12,9 @@ let mongoURI =
   // process.env.MONGODB_PASSWORD +
   process.env.MONGODB_URI;
 // const mongoURI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/api-test?retryWrites=false";
-console.log('mongoURI: ', mongoURI);
+// console.log('mongoURI: ', mongoURI);
 
 const connectDB = async () => {
-  // mongoURI =
-  //   "mongodb+srv://" +
-  //   process.env.MONGODB_ADMIN +
-  //   ":" +
-  //   process.env.MONGODB_PASSWORD +
-  //   process.env.MONGODB_URI;
-  // console.log('mongoURI: ', mongoURI);
   console.log("trying to connect mongoURI: ", mongoURI);
   try {
     await mongoose.connect(mongoURI, {
@@ -29,7 +22,7 @@ const connectDB = async () => {
       useUnifiedTopology: true,
       useCreateIndex: true,
     });
-    console.log("MongoDB is Connected...");
+    console.log("MongoDB is Connected.");
   } catch (err) {
     console.error('error: ', err);
     // process.exit(1);

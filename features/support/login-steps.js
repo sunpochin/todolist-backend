@@ -17,7 +17,6 @@ Given("I go to {string}", async function (string) {
 	// Write code here that turns the phrase above into concrete actions
 	// return "pending";
 	// let userOne = helpers.userOne;
-	// console.log('helpers: ', helpers, helpers.createTestUser);
 	[userOne, hashedPassword] = await helpers.
   createTestUser();
 
@@ -49,4 +48,3 @@ Then('I should see {string}', function (string) {
   assert(string === ret.status.toString() );
 
 });
-
