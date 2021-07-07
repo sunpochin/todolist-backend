@@ -2,10 +2,10 @@
 const request = require("supertest");
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
-const db = require("../db/mongoose");
+const db = require("../src/db/mongoose");
 
-const app = require("../app");
-const User = require("../models/user");
+const app = require("../src/app");
+const User = require("../src/models/user");
 
 // let hashedPassword;
 const hashpassword = async function (password) {

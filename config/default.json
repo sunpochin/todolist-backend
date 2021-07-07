@@ -1,8 +1,0 @@
-// default.json
-
-{
-  "test" : "abc"
-}
-// "mongoURI": "mongodb://localhost:27017/notesDB"
-
- /* Replace <password> with your database password */
