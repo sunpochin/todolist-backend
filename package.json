@@ -9,6 +9,7 @@
   "scripts": {
     "start": "env-cmd -f ./config/atlas.env node src/index.js",
     "app": "env-cmd -f ./config/atlas.env nodemon src/index.js",
+    "circle": "jest --coverage",
     "cucumberjs": "./node_modules/.bin/cucumber-js",
     "test": "set NODE_ENV=test && env-cmd -f ./config/test.env jest --coverage",
     "watchtest": "env-cmd -f ./config/test.env jest --watch --detectOpenHandles"
