@@ -7,18 +7,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "env-cmd -f ./config/atlas.env node index.js",
-    "app": "env-cmd -f ./config/dev.env nodemon index.js",
-    "test": "env-cmd -f ./config/test.json jest --coverage",
-    "watchtest": "env-cmd -f ./config/test.json jest --watch --detectOpenHandles"
+    "start": "env-cmd -f ./config/atlas.env node src/index.js",
+    "app": "env-cmd -f ./config/atlas.env nodemon src/index.js",
+    "cucumberjs": "./node_modules/.bin/cucumber-js",
+    "test": "set NODE_ENV=test && env-cmd -f ./config/test.env jest --coverage",
+    "watchtest": "env-cmd -f ./config/test.env jest --watch --detectOpenHandles"
   },
   "jest": {
-    "setupFiles": ["./test/helpers.js"],
+    "setupFiles": [
+      "./test/helpers.js"
+    ],
     "testEnvironment": "node"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@cucumber/cucumber": "^7.3.0",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",

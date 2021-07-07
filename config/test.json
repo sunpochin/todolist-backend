@@ -1,0 +1,6 @@
+{
+  "MONGODB_URI": "mongodb+srv://admin-pac:test5566@cluster0.o1ffm.mongodb.net/todolistDB?retryWrites=true&w=majority",
+
+  "CLIENT_ID": "508851051059-t1v2j7b5i1cblileejqjlnbr52800eod.apps.googleusercontent.com",
+  "CLIENT_SECRET": "1DuNp1KLKA4sQUmybWWt07zr"
+}
