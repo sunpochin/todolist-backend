@@ -20,11 +20,8 @@ const {
 } = require('google-auth-library');
 const client = new OAuth2Client(process.env.CLIENT_ID);
 
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-
 const todoRoutes = require("./routes/todo-routes");
 const usersRoutes = require("./routes/users-routes");
-const User = require("./models/user.js");
 const app = express();
 
 const CLIENT_HOME_PAGE_URL = "http://localhost:3000/list";
@@ -36,37 +33,6 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
-
-// app.use(
-//   session({
-//     secret: "our little secret!",
-//     resave: false,
-//     saveUninitialized: false,
-//   })
-// );
-// app.use(cors({
-//   origin: true,
-//   credentials: true
-// }));
-passport.use(User.createStrategy());
-
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
-
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
-    done(err, user);
-  });
-});
-
-app.use("/todos", todoRoutes);
-// app.use("/", usersRoutes);
-// app.get("/", (req, res) => res.send("server by sunpochin@gmail.com"));
-
 
 // twitter auth part.
 app.use(
@@ -84,31 +50,35 @@ app.use(cors({
   origin: true,
   credentials: true
 }));
+
+// const authCheck = (req, res, next) => {
+//   if (!req.user) {
+//     res.status(401).json({
+//       authenticated: false,
+//       message: "user has not been authenticated"
+//     });
+//   } else {
+//     next();
+//   }
+// };
+//
+// // if it's already login, send the profile response,
+// // otherwise, send a 401 response that the user is not authenticated
+// // authCheck before navigating to home page
+// app.get("/", authCheck, (req, res) => {
+//   res.status(200).json({
+//     authenticated: true,
+//     message: "user successfully authenticated",
+//     user: req.user,
+//     cookies: req.cookies
+//   });
+// });
+//
 // set up routes
-app.use("/auth", authRoutes);
-
-
-const authCheck = (req, res, next) => {
-  if (!req.user) {
-    res.status(401).json({
-      authenticated: false,
-      message: "user has not been authenticated"
-    });
-  } else {
-    next();
-  }
-};
-
-// if it's already login, send the profile response,
-// otherwise, send a 401 response that the user is not authenticated
-// authCheck before navigating to home page
-app.get("/", authCheck, (req, res) => {
-  res.status(200).json({
-    authenticated: true,
-    message: "user successfully authenticated",
-    user: req.user,
-    cookies: req.cookies
-  });
-});
+app.use("/v1/auth", authRoutes);
+app.use("/v2/auth", authRoutes);
+app.use("/v1/todos", todoRoutes);
+app.use("/v1", usersRoutes);
+// app.get("/", (req, res) => res.send("server by sunpochin@gmail.com"));
 
 module.exports = app;
