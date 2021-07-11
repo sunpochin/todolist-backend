@@ -28,9 +28,7 @@ global.createTestUser = async () => {
 		email: "testuser@ab.com",
 		password: hashedPassword,
 	};
-	// db.connection.collections["users"].drop(function (err) {
-	// 	console.log("collection dropped");
-	// });
+	
 	createRet = await new User(userOne).save();
 	console.log("createRet: ", createRet);
 	return [userOne, createRet];

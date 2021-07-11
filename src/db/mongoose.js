@@ -30,7 +30,6 @@ const connectDB = async () => {
 };
 
 const closeDB = async () => {
-  console.log("mongoURI: ", mongoURI);
   try {
     await mongoose.connection.close();
     console.log("MongoDB is disconnected");

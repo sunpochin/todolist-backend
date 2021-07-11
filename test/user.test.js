@@ -15,7 +15,7 @@ beforeAll(async () => {
 }, 10000);
 
 afterAll(async() => {
-	await db.closeDB();
+	// await db.closeDB();
 });
 
 // test("Get /", async () => {
@@ -25,7 +25,7 @@ afterAll(async() => {
 
 test("Should login an existing user", async () => {
   await request(app)
-    .post("/login")
+    .post("/v1/login")
     .send({
       email: userOne.email,
       password: '1234567',
@@ -35,7 +35,7 @@ test("Should login an existing user", async () => {
 
 test("Should NOT login due to wrong password", async () => {
   await request(app)
-    .post("/login")
+    .post("/v1/login")
     .send({
       email: userOne.email,
       password: 'xxxxxxxxxx',
@@ -45,7 +45,7 @@ test("Should NOT login due to wrong password", async () => {
 
 test("Should signup a new user", async () => {
   await request(app)
-    .post("/signup")
+    .post("/v1/signup")
     .send({
       name: "sunpo",
       email: "sunpochin@gmail.com",
