@@ -3,8 +3,7 @@
 const router = require("express").Router();
 const passport = require("passport");
 const CLIENT_HOME_PAGE_URL = "http://localhost:3000";
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const User = require("../../models/user.js");
+// const User = require("../../models/user.js");
 
 // app.use(
 //   session({
@@ -17,22 +16,6 @@ const User = require("../../models/user.js");
 //   origin: true,
 //   credentials: true
 // }));
-passport.use(User.createStrategy());
-
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
-
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
-    done(err, user);
-  });
-});
-
-
 // when login is successful, retrieve user info
 router.get("/twitter/login/success", (req, res) => {
   console.log('/twitter/login/success: ', req.body);
@@ -74,47 +57,24 @@ router.get(
   })
 );
 
-// auth with google
-passport.use(new GoogleStrategy({
-    clientID: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:8081/v1/auth/google/redirect",
-    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
-  },
-  function(accessToken, refreshToken, profile, done) {
-    console.log("profile: ", profile);
-    console.log('oauth accessToken', accessToken);
-    User.findOrCreate({
-      googleId: profile.id,
-			email: profile._json.email
-    }, function(err, user) {
-      return done(err, user);
-    });
-    // var userData = {
-    //     name: profile.displayName,
-    //     token: accessToken
-    //    };
-    // done(null, userData);
-  }
-));
-
 router.get('/google',
   passport.authenticate('google', {
+    session: false,
     scope: ['profile', 'email']
   }));
 
 router.get('/google/redirect',
   passport.authenticate('google', {
+    // session: false,
     successRedirect: CLIENT_HOME_PAGE_URL,
-    failureRedirect: CLIENT_HOME_PAGE_URL
+    // failureRedirect: CLIENT_HOME_PAGE_URL
   }),
   function(req, res) {
-    console.log('auth redirect', token);
     var token = req.user.token;
-    // res.redirect("http://localhost:3000?token=" + token);
-    console.log('req body: ', req.body, ', token: ', token);
+    console.log('****Auth REDIRECT****, req body: ', req.status, req.authInfo);
     // Successful authentication, redirect home.
-    // res.redirect('/secrets');
+    res.redirect('/secrets');
+    // res.redirect("http://localhost:3000?token=" + token);
   });
 
 router.get("/google/login/success", (req, res) => {

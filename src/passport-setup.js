@@ -1,8 +1,24 @@
 //jshint esversion: 9
 const passport = require("passport");
 const TwitterStrategy = require("passport-twitter");
-const keys = require("../config/keys");
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require("./models/user");
+const keys = require("../config/keys");
+passport.use(User.createStrategy());
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
+
+// passport.serializeUser(function(user, done) {
+//   done(null, user);
+// });
+//
+// passport.deserializeUser(function(id, done) {
+//   User.findById(id, function(err, user) {
+//     done(err, user);
+//   });
+// });
+//
+//
 
 // serialize the user.id to save in the cookie session
 // so the browser will remember the user when login
@@ -50,3 +66,30 @@ passport.use(
     }
   )
 );
+
+// auth with google
+passport.use(new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: "http://localhost:8081/v1/auth/google/redirect",
+    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
+  },
+  function(accessToken, refreshToken, profile, done) {
+    console.log("profile: ", profile);
+    console.log('oauth accessToken', accessToken);
+    console.log('done: ', done);
+
+    User.findOrCreate({
+      googleId: profile.id,
+			email: profile._json.email
+    }, function(err, user) {
+      console.log("findOrCreate err: ", err);
+      return done(err, user, "abcxxx", "defyyy");
+    });
+    // var userData = {
+    //     name: profile.displayName,
+    //     token: accessToken
+    //    };
+    // done(null, userData);
+  }
+));

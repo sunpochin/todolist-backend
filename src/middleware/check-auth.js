@@ -1,3 +1,5 @@
+//jshint esversion: 9
+
 const HttpError = require("../models/http-error");
 const jwt = require("jsonwebtoken");
 
