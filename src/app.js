@@ -11,7 +11,7 @@ const cookieParser = require("cookie-parser"); // parse cookie
 const passport = require("passport");
 const passportSetup = require("./passport-setup");
 const authRoutesV1 = require("./routes/v1/authRoutesV1");
-const authRoutesV2 = require("./routes/v2/authRoutesV2");
+// const authRoutesV2 = require("./routes/v2/authRoutesV2");
 const mongoose = require("mongoose");
 const keys = require("../config/keys");
 
@@ -20,6 +20,7 @@ const usersRoutes = require("./routes/users-routes");
 const app = express();
 
 const CLIENT_HOME_PAGE_URL = "http://localhost:3000/list";
+db.connectDB();
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({
@@ -70,7 +71,7 @@ app.use(cors({
 //
 // set up routes
 app.use("/v1/auth", authRoutesV1);
-app.use("/v2/auth", authRoutesV2);
+// app.use("/v2/auth", authRoutesV2);
 app.use("/v1/todos", todoRoutes);
 app.use("/v1", usersRoutes);
 // app.get("/", (req, res) => res.send("server by sunpochin@gmail.com"));

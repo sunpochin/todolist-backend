@@ -5,7 +5,6 @@ const http = require("http");
 const fs = require("fs");
 
 const app = require("./app");
-db.connectDB();
 
 // const httpsPort = process.env.PORT || 8088;
 const httpPort = 8081;

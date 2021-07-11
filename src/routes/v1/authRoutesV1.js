@@ -86,7 +86,7 @@ passport.use(new GoogleStrategy({
     console.log('oauth accessToken', accessToken);
     User.findOrCreate({
       googleId: profile.id,
-			email: profile.email
+			email: profile._json.email
     }, function(err, user) {
       return done(err, user);
     });
@@ -100,7 +100,7 @@ passport.use(new GoogleStrategy({
 
 router.get('/google',
   passport.authenticate('google', {
-    scope: ['profile']
+    scope: ['profile', 'email']
   }));
 
 router.get('/google/redirect',
@@ -122,7 +122,7 @@ router.get("/google/login/success", (req, res) => {
   if (req.user) {
     res.json({
       success: true,
-      message: "google user has successfully authenticated",
+      message: "Google user has successfully authenticated",
       user: req.user,
       cookies: req.cookies
     });
@@ -141,43 +141,6 @@ router.get("/google/logout", (req, res) => {
   req.logout();
   res.redirect(CLIENT_HOME_PAGE_URL);
 });
-
-// app.post("/api/v1/auth/google", async (req, res) => {
-// 	console.log('auth google CLIENT_ID: ', process.env.CLIENT_ID);
-// 	// const client = new OAuth2Client(process.env.CLIENT_ID);
-//   const {
-//     token
-//   } = req.body
-// 	console.log('auth google req body: ', req.body);
-//   const ticket = await client.verifyIdToken({
-//     idToken: token,
-//     audience: process.env.CLIENT_ID
-//   });
-//   const {
-//     name,
-//     email,
-//     picture
-//   } = ticket.getPayload();
-//   const user = await User.findByIdAndUpdate({
-//     where: {
-//       email: email
-//     },
-//     update: {
-//       name,
-//       picture
-//     },
-//     create: {
-//       name,
-//       email,
-//       picture
-//     }
-//   })
-//   console.log('google user: ', user);
-//   res.status(201);
-//   res.json(user);
-// })
-
-
 
 
 module.exports = router;
