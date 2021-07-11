@@ -21,7 +21,6 @@ const app = express();
 
 const CLIENT_HOME_PAGE_URL = "http://localhost:3000/list";
 
-db.connectDB();
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({
   extended: true

@@ -113,7 +113,6 @@ passport.use(
   )
 );
 
-
 passport.use(
   new TwitterStrategy(
     {

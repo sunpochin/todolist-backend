@@ -35,17 +35,4 @@ AfterAll(function () {
   db.closeDB();
 });
 
-// BeforeStep({tags: "@foo"}, function () {
-//   // This hook will be executed before all steps in a scenario with tag @foo
-// });
-
-// AfterStep( function ({result}) {
-//   // This hook will be executed after all steps, and take a screenshot on step failure
-//   console.log('db: ', db);
-//   db.closeDB();
-//   if (result.status === Status.FAILED) {
-//     this.driver.takeScreenshot();
-//   }
-// });
-
 setWorldConstructor(CustomWorld);
