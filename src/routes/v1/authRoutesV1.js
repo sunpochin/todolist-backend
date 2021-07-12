@@ -2,8 +2,11 @@
 
 const router = require("express").Router();
 const passport = require("passport");
+const { OAuth2Client } = require('google-auth-library');
+const oAuth2Client = new OAuth2Client(process.env.CLIENT_ID);
+
 const CLIENT_HOME_PAGE_URL = "http://localhost:3000";
-// const User = require("../../models/user.js");
+const User = require("../../models/user.js");
 
 // app.use(
 //   session({
@@ -38,7 +41,7 @@ router.get("/twitter/login/failed", (req, res) => {
   });
 });
 
-// When logout, redirect to client
+// When logout, redirect to
 router.get("/twitter/logout", (req, res) => {
   console.log('/logout ', req.body);
   req.logout();
@@ -57,9 +60,13 @@ router.get(
   })
 );
 
+// https://blog.prototypr.io/how-to-build-google-login-into-a-react-app-and-node-express-api-821d049ee670
+router.post("/google", async (req, res) => {
+});
+
 router.get('/google',
   passport.authenticate('google', {
-    session: false,
+    // session: false,
     scope: ['profile', 'email']
   }));
 
@@ -67,14 +74,18 @@ router.get('/google/redirect',
   passport.authenticate('google', {
     // session: false,
     successRedirect: CLIENT_HOME_PAGE_URL,
-    // failureRedirect: CLIENT_HOME_PAGE_URL
+    failureRedirect: CLIENT_HOME_PAGE_URL
   }),
   function(req, res) {
-    var token = req.user.token;
+    var token = authService.signToken(req, res);
     console.log('****Auth REDIRECT****, req body: ', req.status, req.authInfo);
-    // Successful authentication, redirect home.
-    res.redirect('/secrets');
-    // res.redirect("http://localhost:3000?token=" + token);
+    console.log('****Auth REDIRECT****, token: ', token);
+    // res.redirect(CLIENT_HOME_PAGE_URL + "/?token=" + token);
+    let jsonitem = {token};
+    res.redirect(CLIENT_HOME_PAGE_URL + "/list" );
+    // res.redirect("/api?token=" + token);
+    // // Successful authentication, redirect home.
+    // res.redirect('/secrets');
   });
 
 router.get("/google/login/success", (req, res) => {
@@ -88,7 +99,6 @@ router.get("/google/login/success", (req, res) => {
     });
   }
 });
-
 
 router.get("/google/login/failed", (req, res) => {
   res.status(401).json({

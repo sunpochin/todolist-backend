@@ -43,7 +43,7 @@ const getTodoById = async (req, res, next) => {
 
 const getTodosByUserId = async (req, res, next) => {
   const userId = req.params.uid;
-  console.log('req.params: ', req.params);
+  console.log('getTodosByUserId, req.params: ', req.params);
 
   let userWithTodos;
   try {

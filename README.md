@@ -10,3 +10,7 @@
 
 * personal dev branch status:
 ![CircleCI](https://circleci.com/gh/sunpochin/todolist-backend/tree/pochin-branch.svg?style=shield)
+
+
+# Ref:
+https://blog.prototypr.io/how-to-build-google-login-into-a-react-app-and-node-express-api-821d049ee670

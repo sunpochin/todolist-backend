@@ -77,10 +77,11 @@ passport.use(new GoogleStrategy({
   function(accessToken, refreshToken, profile, done) {
     console.log("profile: ", profile);
     console.log('oauth accessToken', accessToken);
+    console.log('oauth refreshToken', refreshToken);
     console.log('done: ', done);
 
     User.findOrCreate({
-      googleId: profile.id,
+      // googleId: profile.id,
 			email: profile._json.email
     }, function(err, user) {
       console.log("findOrCreate err: ", err);

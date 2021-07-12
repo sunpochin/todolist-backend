@@ -10,9 +10,9 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
 	// name: { type: String, required: true },
-//	email: { type: String, required: true, unique: true },
+	email: { type: String, required: true, unique: true },
 	googleId: String,
-	email: String,
+	// email: String,
 	password: String,
 	// googleId: { type: String },
 	// image: { type: String, required: true },
