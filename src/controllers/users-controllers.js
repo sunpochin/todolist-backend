@@ -1,4 +1,4 @@
-//jshint esversion:6
+//jshint esversion:9
 
 //https://stackoverflow.com/questions/29320201/error-installing-bcrypt-with-npm
 
@@ -29,17 +29,7 @@ const getUsers = async (req, res, next) => {
   });
 };
 
-const signup = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(
-      new HttpError("Invalid inputs passed, please check your data." + errors, 422)
-    );
-  }
-  const {
-    email,
-    password
-  } = req.body;
+const decideUser = async(email) => {
   let existingUser;
   try {
     existingUser = await User.findOne({
@@ -67,8 +57,40 @@ const signup = async (req, res, next) => {
         error: errmsg,
         email: existingUser.email
       });
-      return;
+    return;
   }
+};
+
+ async function createUser(email, hashedPassword) {
+  const createdUser = new User({
+    email,
+    // image: req.file.path,
+    password: hashedPassword,
+    todos: [],
+  });
+
+  try {
+    await createdUser.save();
+  } catch (err) {
+    const errMsg = "Signing up failed: " + err;
+    const error = new HttpError(errMsg, 500);
+    // return next(error);
+  }
+}
+
+const signup = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(
+      new HttpError("Invalid inputs passed, please check your data." + errors, 422)
+    );
+  }
+  const {
+    email,
+    password
+  } = req.body;
+
+  decideUser(email);
 
   let hashedPassword;
   try {
@@ -82,22 +104,7 @@ const signup = async (req, res, next) => {
     return next(error);
   }
 
-  const createdUser = new User({
-    email,
-    // image: req.file.path,
-    password: hashedPassword,
-    todos: [],
-  });
-
-  try {
-    await createdUser.save();
-  } catch (err) {
-    const error = new HttpError(
-      "Signing up failed, please try again later. " + err,
-      500
-    );
-    return next(error);
-  }
+  let newUser = await createUser(email, hashedPassword);
 
   let token;
   try {
@@ -110,10 +117,8 @@ const signup = async (req, res, next) => {
       }
     );
   } catch (err) {
-    const error = new HttpError(
-      "Signing up failed, please try again later.",
-      500
-    );
+    const errMsg = "Signing up failed: " + err;
+    const error = new HttpError(errMsg, 500);
     return next(error);
   }
   // console.log('sign up token: ', token);
@@ -127,6 +132,7 @@ const signup = async (req, res, next) => {
 };
 
 const login = async (req, res, next) => {
+  console.log("login req: ", req.body);
   const {
     email,
     password
@@ -138,8 +144,9 @@ const login = async (req, res, next) => {
       email: email
     });
   } catch (err) {
+    const errMsg = "errmsg: " + err;
     const error = new HttpError(
-      "Loggin in failed, please try again later.",
+      errMsg,
       500
     );
     return next(error);
@@ -219,3 +226,4 @@ const login = async (req, res, next) => {
 exports.getUsers = getUsers;
 exports.signup = signup;
 exports.login = login;
+exports.createUser = createUser;
