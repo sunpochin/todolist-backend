@@ -34,7 +34,7 @@ const getUsers = async (req, res, next) => {
 };
 
 const decideUser = async (email, req, res, next) => {
-  let existingUser;
+  let existingUser = null;
   try {
     existingUser = await User.findOne({
       email: email
@@ -76,7 +76,7 @@ async function createUser(email, hashedPassword) {
 
 const signupBody = async (from, req, res, next) => {
   console.log("from: ", from, ", req.body: ", req.body);
-  let email, password;
+  let email, password, retUser, retMsg;
   if ("manual" === from) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -99,8 +99,12 @@ const signupBody = async (from, req, res, next) => {
   }
 
   const existingUser = await decideUser(email, req, res, next);
+  if (existingUser) {
+    retUser = existingUser;
+  }
+
   if ("manual" === from) {
-    if (existingUser) {
+    if (retUser) {
       const errmsg = "User exists already, please login instead: " + existingUser;
       console.log(errmsg);
       res
@@ -111,6 +115,8 @@ const signupBody = async (from, req, res, next) => {
         });
       return;
     }
+  } else if ("google" === from) {
+    // retUser
   }
 
 
@@ -126,13 +132,15 @@ const signupBody = async (from, req, res, next) => {
     // return next(error);
   }
 
-  let [createdUser, msg] = await createUser(email, hashedPassword);
+  if (!retUser) {
+    [retUser, retMsg] = await createUser(email, hashedPassword);
+  }
 
   let token;
   try {
     token = jwt.sign({
-        userId: createdUser.id,
-        email: createdUser.email
+        userId: retUser.id,
+        email: retUser.email
       },
       "dontshare", {
         expiresIn: "1h"
@@ -146,9 +154,9 @@ const signupBody = async (from, req, res, next) => {
   }
   const resItem = {
     from: from,
-    msg: msg,
-    userId: createdUser.id,
-    email: createdUser.email,
+    msg: retMsg,
+    userId: retUser.id,
+    email: retUser.email,
     token: token
   };
   console.log('res Item: ', resItem);
@@ -257,5 +265,3 @@ exports.getUsers = getUsers;
 exports.signup = signup;
 exports.signupBody = signupBody;
 exports.login = login;
-// exports.createUser = createUser;
-// exports.decideUser = decideUser;
