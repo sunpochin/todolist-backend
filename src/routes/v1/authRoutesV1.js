@@ -65,25 +65,14 @@ router.get(
 
 // https://blog.prototypr.io/how-to-build-google-login-into-a-react-app-and-node-express-api-821d049ee670
 router.post("/google", async (req, res) => {
-  const {
-    token
-  } = req.body;
-  const ticket = await oAuth2Client.verifyIdToken({
-    idToken: token,
-    audience: process.env.CLIENT_ID
-  });
-  const {
-    name,
-    email,
-    picture
-  } = ticket.getPayload();
-  let [user, msg] = await usersController.createUser(email);
-  console.log("user ret: ", msg, ", user:", user);
-  // console.log("haha create user: ", user);
-  res.status(201).json({
-    user: user,
-    msg: msg
-  });
+  await usersController.signupBody("google", req, res);
+  // [user, msg] = await usersController.createUser(email);
+  // console.log("user ret: ", msg, ", user:", user);
+  // // console.log("haha create user: ", user);
+  // res.status(201).json({
+  //   user: user,
+  //   msg: msg
+  // });
 });
 
 router.get('/google',

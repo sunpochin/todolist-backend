@@ -20,13 +20,13 @@ module.exports = async(req, res, next) => {
 			throw Error("Auth failed", 401);
 		} else {
 			// const { token }  = req.body;
-	    const ticket = await oAuth2Client.verifyIdToken({
-	        idToken: token,
-	        audience: process.env.CLIENT_ID
-	    });
-			console.log("token: ", token, ", ticket info: ", ticket);
-			// const decodedToken = jwt.verify(token, "1DuNp1KLKA4sQUmybWWt07zr", { algorithms: ['RS256'] });
-			// req.userData = { userId: decodedToken.userId };
+	    // const ticket = await oAuth2Client.verifyIdToken({
+	    //     idToken: token,
+	    //     audience: process.env.CLIENT_ID
+	    // });
+			// console.log("token: ", token, ", ticket info: ", ticket);
+			const decodedToken = jwt.verify(token, "dontshare");
+			req.userData = { userId: decodedToken.userId };
 			next();
 		}
 	} catch (err) {

@@ -1,6 +1,10 @@
 //jshint esversion:9
 
 //https://stackoverflow.com/questions/29320201/error-installing-bcrypt-with-npm
+const {
+  OAuth2Client
+} = require('google-auth-library');
+const oAuth2Client = new OAuth2Client(process.env.CLIENT_ID);
 
 const {
   validationResult
@@ -29,7 +33,7 @@ const getUsers = async (req, res, next) => {
   });
 };
 
-const decideUser = async(email, req, res) => {
+const decideUser = async (email, req, res, next) => {
   let existingUser;
   try {
     existingUser = await User.findOne({
@@ -40,22 +44,27 @@ const decideUser = async(email, req, res) => {
       "Signing up failed, please try again later. " + err,
       500
     );
-    return next(error);
+    // console.log("next: ", next);
+    // if (undefined !== next) {
+    //   return next(error);
+    // }
   }
   return existingUser;
 };
 
 async function createUser(email, hashedPassword) {
+  console.log("createUser email: ", email, hashedPassword);
   let msg;
-  const createdUser = new User({
-    email,
-    // image: req.file.path,
-    password: hashedPassword,
-    todos: [],
-  });
+  let createdUser;
   try {
+    createdUser = new User({
+      email,
+      // image: req.file.path,
+      password: hashedPassword,
+      todos: [],
+    });
+    msg = "User created, password: " + hashedPassword;
     await createdUser.save();
-    msg = "User created!";
   } catch (err) {
     msg = "create user error: " + err;
     // const error = new HttpError(errMsg, 500);
@@ -64,32 +73,48 @@ async function createUser(email, hashedPassword) {
   return [createdUser, msg];
 }
 
-const signup = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(
-      new HttpError("Invalid inputs passed, please check your data." + errors, 422)
-    );
-  }
-  const {
-    email,
-    password
-  } = req.body;
 
-  const existingUser = await decideUser(email, req, res);
-  if (existingUser) {
-    const errmsg = "User exists already, please login instead: " + existingUser;
-    console.log(errmsg);
-    res
-      .status(422)
-      .json({
-        error: errmsg,
-        email: existingUser.email
-      });
-    return;
+const signupBody = async (from, req, res, next) => {
+  console.log("from: ", from, ", req.body: ", req.body);
+  let email, password;
+  if ("manual" === from) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(
+        new HttpError("Invalid inputs passed, please check your data." + errors, 422)
+      );
+    }
+    [email, password] = req.body;
+  } else if ("google" === from) {
+    const {
+      token
+    } = req.body;
+    const ticket = await oAuth2Client.verifyIdToken({
+      idToken: token,
+      audience: process.env.CLIENT_ID
+    });
+
+    email = ticket.getPayload().email;
+    console.log("ticket: ", ticket, ", email: ", email);
   }
 
-  let hashedPassword;
+  const existingUser = await decideUser(email, req, res, next);
+  if ("manual" === from) {
+    if (existingUser) {
+      const errmsg = "User exists already, please login instead: " + existingUser;
+      console.log(errmsg);
+      res
+        .status(422)
+        .json({
+          error: errmsg,
+          email: existingUser.email
+        });
+      return;
+    }
+  }
+
+
+  let hashedPassword = "A4oVCfspDvzxwGiKhHytwoqo45r4jRWFXcFGT01Bdxv_ggbsRvlDXzE5l5_CzhUHlcG2AJKYj1lCReaN";
   try {
     const salt = 12;
     hashedPassword = await bcrypt.hash(password, salt);
@@ -98,7 +123,7 @@ const signup = async (req, res, next) => {
       "Could not create user, please try again." + err,
       500
     );
-    return next(error);
+    // return next(error);
   }
 
   let [createdUser, msg] = await createUser(email, hashedPassword);
@@ -113,19 +138,27 @@ const signup = async (req, res, next) => {
         expiresIn: "1h"
       }
     );
+    console.log("jwt.sign token");
   } catch (err) {
     const errMsg = "Signing up failed: " + err;
     const error = new HttpError(errMsg, 500);
     return next(error);
   }
-  // console.log('sign up token: ', token);
+  const resItem = {
+    from: from,
+    msg: msg,
+    userId: createdUser.id,
+    email: createdUser.email,
+    token: token
+  };
+  console.log('res Item: ', resItem);
   res
     .status(201)
-    .json({
-      userId: createdUser.id,
-      email: createdUser.email,
-      token: token
-    });
+    .json(resItem);
+};
+
+const signup = async (req, res, next) => {
+  await signupBody("manual", req, res, next);
 };
 
 const login = async (req, res, next) => {
@@ -222,5 +255,7 @@ const login = async (req, res, next) => {
 
 exports.getUsers = getUsers;
 exports.signup = signup;
+exports.signupBody = signupBody;
 exports.login = login;
-exports.createUser = createUser;
+// exports.createUser = createUser;
+// exports.decideUser = decideUser;
