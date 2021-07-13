@@ -29,7 +29,7 @@ const getUsers = async (req, res, next) => {
   });
 };
 
-const decideUser = async(email) => {
+const decideUser = async(email, req, res) => {
   let existingUser;
   try {
     existingUser = await User.findOne({
@@ -42,40 +42,26 @@ const decideUser = async(email) => {
     );
     return next(error);
   }
-
-  if (existingUser) {
-    // const error = new HttpError(
-    //   "User exists already, please login instead.",
-    //   422
-    // );
-    // return next(error);
-    const errmsg = 'Already existed user';
-    console.log(errmsg);
-    res
-      .status(422)
-      .json({
-        error: errmsg,
-        email: existingUser.email
-      });
-    return;
-  }
+  return existingUser;
 };
 
- async function createUser(email, hashedPassword) {
+async function createUser(email, hashedPassword) {
+  let msg;
   const createdUser = new User({
     email,
     // image: req.file.path,
     password: hashedPassword,
     todos: [],
   });
-
   try {
     await createdUser.save();
+    msg = "User created!";
   } catch (err) {
-    const errMsg = "Signing up failed: " + err;
-    const error = new HttpError(errMsg, 500);
+    msg = "create user error: " + err;
+    // const error = new HttpError(errMsg, 500);
     // return next(error);
   }
+  return [createdUser, msg];
 }
 
 const signup = async (req, res, next) => {
@@ -90,7 +76,18 @@ const signup = async (req, res, next) => {
     password
   } = req.body;
 
-  decideUser(email);
+  const existingUser = await decideUser(email, req, res);
+  if (existingUser) {
+    const errmsg = "User exists already, please login instead: " + existingUser;
+    console.log(errmsg);
+    res
+      .status(422)
+      .json({
+        error: errmsg,
+        email: existingUser.email
+      });
+    return;
+  }
 
   let hashedPassword;
   try {
@@ -104,7 +101,7 @@ const signup = async (req, res, next) => {
     return next(error);
   }
 
-  let newUser = await createUser(email, hashedPassword);
+  let [createdUser, msg] = await createUser(email, hashedPassword);
 
   let token;
   try {

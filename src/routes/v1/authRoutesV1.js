@@ -2,7 +2,9 @@
 
 const router = require("express").Router();
 const passport = require("passport");
-const { OAuth2Client } = require('google-auth-library');
+const {
+  OAuth2Client
+} = require('google-auth-library');
 const oAuth2Client = new OAuth2Client(process.env.CLIENT_ID);
 
 const CLIENT_HOME_PAGE_URL = "http://localhost:3000";
@@ -63,19 +65,25 @@ router.get(
 
 // https://blog.prototypr.io/how-to-build-google-login-into-a-react-app-and-node-express-api-821d049ee670
 router.post("/google", async (req, res) => {
-  const { token }  = req.body;
+  const {
+    token
+  } = req.body;
   const ticket = await oAuth2Client.verifyIdToken({
-      idToken: token,
-      audience: process.env.CLIENT_ID
+    idToken: token,
+    audience: process.env.CLIENT_ID
   });
-  const { name, email, picture } = ticket.getPayload();
-  const user = usersController.createUser(email);
-  // const user = await db.user.upsert({
-  //     where: { email: email },
-  //     update: { name, picture },
-  //     create: { name, email, picture }
-  // });
-  res.status(201).json(user);
+  const {
+    name,
+    email,
+    picture
+  } = ticket.getPayload();
+  let [user, msg] = await usersController.createUser(email);
+  console.log("user ret: ", msg, ", user:", user);
+  // console.log("haha create user: ", user);
+  res.status(201).json({
+    user: user,
+    msg: msg
+  });
 });
 
 router.get('/google',
@@ -95,8 +103,10 @@ router.get('/google/redirect',
     console.log('****Auth REDIRECT****, req body: ', req.status, req.authInfo);
     console.log('****Auth REDIRECT****, token: ', token);
     // res.redirect(CLIENT_HOME_PAGE_URL + "/?token=" + token);
-    let jsonitem = {token};
-    res.redirect(CLIENT_HOME_PAGE_URL + "/list" );
+    let jsonitem = {
+      token
+    };
+    res.redirect(CLIENT_HOME_PAGE_URL + "/list");
     // res.redirect("/api?token=" + token);
     // // Successful authentication, redirect home.
     // res.redirect('/secrets');
