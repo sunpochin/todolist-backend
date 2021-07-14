@@ -7,9 +7,6 @@ const usersController = require('../controllers/users-controllers');
 const fileUpload = require('../middleware/file-upload');
 const router = express.Router();
 
-// const checkAuth = require('../middleware/check-auth');
-// router.use(checkAuth);
-
 // router.get('/', usersController.getUsers);
 
 router.post(
@@ -22,7 +19,7 @@ router.post(
     check('email')
       .normalizeEmail()
       .isEmail(),
-    check('password').isLength({ min: 6 })
+    check('password').isLength({ min: 3 })
   ],
   usersController.signup
 );

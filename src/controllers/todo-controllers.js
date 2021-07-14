@@ -43,7 +43,7 @@ const getTodoById = async (req, res, next) => {
 
 const getTodosByUserId = async (req, res, next) => {
   const userId = req.params.uid;
-  console.log('req.params: ', req.params);
+  console.log('getTodosByUserId, req.params: ', req.params);
 
   let userWithTodos;
   try {
@@ -111,11 +111,10 @@ const createTodo = async (req, res, next) => {
     // user = await User.findById(req.userData.userId);
     console.log('creator: ', creator, ', user: ', user);
   } catch (err) {
-    console.log("err: ", err);
+    const errMsg = "Creating todo failed" + err;
+    console.log(errMsg);
     const error = new HttpError(
-      "Creating todo failed, please try again." + err,
-      500
-    );
+       errMsg, 500);
     return next(error);
   }
 

@@ -3,16 +3,17 @@
 const mongoose = require("mongoose");
 
 const uniqueValidator = require("mongoose-unique-validator");
-const passportLocalMongoose = require("passport-local-mongoose");
+// const passportLocalMongoose = require("passport-local-mongoose");
 const findOrCreate = require("mongoose-findorcreate");
 
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
 	// name: { type: String, required: true },
-//	email: { type: String, required: true, unique: true },
+	// email: { type: String, required: true},
+	email: { type: String, required: true, unique: true },
 	googleId: String,
-	email: String,
+	// email: String,
 	password: String,
 	// googleId: { type: String },
 	// image: { type: String, required: true },
@@ -20,7 +21,7 @@ const userSchema = new Schema({
 });
 
 userSchema.plugin(uniqueValidator);
-userSchema.plugin(passportLocalMongoose);
+// userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
 
 // module.exports = mongoose.model('User', userSchema);
