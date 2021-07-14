@@ -13,7 +13,7 @@ const passportSetup = require("./passport-setup");
 const authRoutesV1 = require("./routes/v1/authRoutesV1");
 // const authRoutesV2 = require("./routes/v2/authRoutesV2");
 const mongoose = require("mongoose");
-const keys = require("../private-files/config/keys");
+// const keys = require("../private-files/config/keys");
 
 const todoRoutes = require("./routes/todo-routes");
 const usersRoutes = require("./routes/users-routes");
@@ -30,14 +30,14 @@ app.use(bodyParser.json());
 app.use(express.static("public"));
 
 // twitter auth part.
-app.use(
-  cookieSession({
-    name: "session",
-    keys: [keys.COOKIE_KEY],
-    maxAge: 24 * 60 * 60 * 100,
-    secure: false
-  })
-);
+// app.use(
+//   cookieSession({
+//     name: "session",
+//     keys: [keys.COOKIE_KEY],
+//     maxAge: 24 * 60 * 60 * 100,
+//     secure: false
+//   })
+// );
 // parse cookies
 app.use(cookieParser());
 app.use(passport.initialize());
