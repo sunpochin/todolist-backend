@@ -7,7 +7,7 @@ const {
 } = require('google-auth-library');
 const oAuth2Client = new OAuth2Client(process.env.CLIENT_ID);
 
-const CLIENT_HOME_PAGE_URL = "http://localhost:3000";
+// const CLIENT_HOME_PAGE_URL = "https://localhost:3000";
 const User = require("../../models/user.js");
 const usersController = require('../../controllers/users-controllers');
 
@@ -44,24 +44,24 @@ router.get("/twitter/login/failed", (req, res) => {
   });
 });
 
-// When logout, redirect to
-router.get("/twitter/logout", (req, res) => {
-  console.log('/logout ', req.body);
-  req.logout();
-  res.redirect(CLIENT_HOME_PAGE_URL);
-});
+// // When logout, redirect to
+// router.get("/twitter/logout", (req, res) => {
+//   console.log('/logout ', req.body);
+//   req.logout();
+//   res.redirect(CLIENT_HOME_PAGE_URL);
+// });
 
 // auth with twitter
 router.get("/twitter", passport.authenticate("twitter"));
 
 // redirect to home page after successfully login via twitter
-router.get(
-  "/twitter/redirect",
-  passport.authenticate("twitter", {
-    successRedirect: CLIENT_HOME_PAGE_URL,
-    failureRedirect: "/auth/login/failed"
-  })
-);
+// router.get(
+//   "/twitter/redirect",
+//   passport.authenticate("twitter", {
+//     successRedirect: CLIENT_HOME_PAGE_URL,
+//     failureRedirect: "/auth/login/failed"
+//   })
+// );
 
 // https://blog.prototypr.io/how-to-build-google-login-into-a-react-app-and-node-express-api-821d049ee670
 router.post("/google", async (req, res) => {
@@ -84,18 +84,17 @@ router.get('/google',
 router.get('/google/redirect',
   passport.authenticate('google', {
     // session: false,
-    successRedirect: CLIENT_HOME_PAGE_URL,
-    failureRedirect: CLIENT_HOME_PAGE_URL
+    successRedirect: process.env.CLIENT_HOME_PAGE_URL,
+    failureRedirect: process.env.CLIENT_HOME_PAGE_URL
   }),
   function(req, res) {
     var token = authService.signToken(req, res);
     console.log('****Auth REDIRECT****, req body: ', req.status, req.authInfo);
     console.log('****Auth REDIRECT****, token: ', token);
-    // res.redirect(CLIENT_HOME_PAGE_URL + "/?token=" + token);
     let jsonitem = {
       token
     };
-    res.redirect(CLIENT_HOME_PAGE_URL + "/list");
+    res.redirect("/list");
     // res.redirect("/api?token=" + token);
     // // Successful authentication, redirect home.
     // res.redirect('/secrets');
@@ -122,7 +121,7 @@ router.get("/google/login/failed", (req, res) => {
 
 router.get("/google/logout", (req, res) => {
   req.logout();
-  res.redirect(CLIENT_HOME_PAGE_URL);
+  res.redirect(process.env.CLIENT_HOME_PAGE_URL);
 });
 
 

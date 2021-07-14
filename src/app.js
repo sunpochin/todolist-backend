@@ -19,7 +19,6 @@ const todoRoutes = require("./routes/todo-routes");
 const usersRoutes = require("./routes/users-routes");
 const app = express();
 
-const CLIENT_HOME_PAGE_URL = "http://localhost:3000/list";
 db.connectDB();
 
 app.set("view engine", "ejs");
