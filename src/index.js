@@ -12,9 +12,9 @@ const httpsPort = 8082;
 
 // const hostName = "localhost";
 const httpsOptions = {
-	ca: fs.readFileSync("./certificates/multi_498484707.ca-bundle", "utf8"),
-	cert: fs.readFileSync("./certificates/multi_498484707.crt", "utf8"),
-	key: fs.readFileSync("./certificates/yesido_me.key", "utf8"),
+	ca: fs.readFileSync("./private-files/certificates/multi_498484707.ca-bundle", "utf8"),
+	cert: fs.readFileSync("./private-files/certificates/multi_498484707.crt", "utf8"),
+	key: fs.readFileSync("./private-files/certificates/yesido_me.key", "utf8"),
 };
 
 const httpsServer = https.createServer(httpsOptions, app);

@@ -3,7 +3,7 @@ const passport = require("passport");
 const TwitterStrategy = require("passport-twitter");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require("./models/user");
-const keys = require("../config/keys");
+const keys = require("../private-files/config/keys");
 // passport.use(User.createStrategy());
 
 

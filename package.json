@@ -7,12 +7,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "env-cmd -f ./config/atlas.env node src/index.js",
-    "app": "env-cmd -f ./config/atlas.env nodemon src/index.js",
+    "start": "env-cmd -f ./private-files/config/atlas.env node src/index.js",
+    "app": "env-cmd -f ./private-files/config/atlas.env nodemon src/index.js",
     "circle": "jest --coverage",
     "cucumberjs": "./node_modules/.bin/cucumber-js",
-    "test": "set NODE_ENV=test && env-cmd -f ./config/test.env jest --coverage",
-    "watchtest": "env-cmd -f ./config/test.env jest --watch --detectOpenHandles"
+    "test": "set NODE_ENV=test && env-cmd -f ./private-files/config/test.env jest --coverage",
+    "watchtest": "env-cmd -f ./private-files/config/test.env jest --watch --detectOpenHandles"
   },
   "jest": {
     "setupFiles": [

@@ -76,7 +76,8 @@ async function createUser(email, hashedPassword) {
 
 const signupBody = async (from, req, res, next) => {
   console.log("from: ", from, ", req.body: ", req.body);
-  let email, password, retUser, retMsg;
+  let email, password, retMsg;
+
   if ("manual" === from) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -84,7 +85,8 @@ const signupBody = async (from, req, res, next) => {
         new HttpError("Invalid inputs passed, please check your data." + errors, 422)
       );
     }
-    [email, password] = req.body;
+    email = req.body.email;
+    password = req.body.password;
   } else if ("google" === from) {
     const {
       token
@@ -98,13 +100,13 @@ const signupBody = async (from, req, res, next) => {
     console.log("ticket: ", ticket, ", email: ", email);
   }
 
-  const existingUser = await decideUser(email, req, res, next);
-  if (existingUser) {
-    retUser = existingUser;
-  }
-
-  if ("manual" === from) {
-    if (retUser) {
+  let retUser = await decideUser(email, req, res, next);
+  // if (existingUser) {
+  //   retUser = existingUser;
+  // }
+  let hashedPassword = null;
+  if (retUser) {
+    if ("manual" === from) {
       const errmsg = "User exists already, please login instead: " + existingUser;
       console.log(errmsg);
       res
@@ -115,21 +117,22 @@ const signupBody = async (from, req, res, next) => {
         });
       return;
     }
+    try {
+      const salt = 12;
+      hashedPassword = await bcrypt.hash(password, salt);
+    } catch (err) {
+      const error = new HttpError(
+        "Could not create user, please try again." + err,
+        500
+      );
+      // return next(error);
+    }
+
+    // hashedPassword = "A4oVCfspDvzxwGiKhHytwoqo45r4jRWFXcFGT01Bdxv_ggbsRvlDXzE5l5_CzhUHlcG2AJKYj1lCReaN";
+    //
   } else if ("google" === from) {
     // retUser
-  }
-
-
-  let hashedPassword = "A4oVCfspDvzxwGiKhHytwoqo45r4jRWFXcFGT01Bdxv_ggbsRvlDXzE5l5_CzhUHlcG2AJKYj1lCReaN";
-  try {
-    const salt = 12;
-    hashedPassword = await bcrypt.hash(password, salt);
-  } catch (err) {
-    const error = new HttpError(
-      "Could not create user, please try again." + err,
-      500
-    );
-    // return next(error);
+    // todo: get google id from react client.
   }
 
   if (!retUser) {
