@@ -10,6 +10,7 @@ const oAuth2Client = new OAuth2Client(process.env.CLIENT_ID);
 const User = require("../../models/user.js");
 const usersController = require('../../controllers/users-controllers');
 
+console.log("successRedirect:process.env.CLIENT_HOME_PAGE_URL: ", process.env.CLIENT_HOME_PAGE_URL);
 // app.use(
 //   session({
 //     secret: "our little secret!",
@@ -47,7 +48,7 @@ router.get("/twitter/login/failed", (req, res) => {
 // router.get("/twitter/logout", (req, res) => {
 //   console.log('/logout ', req.body);
 //   req.logout();
-//   res.redirect(CLIENT_HOME_PAGE_URL);
+//   res.redirect(CLIENT_HOME_PAGE_URLXXX);
 // });
 
 // auth with twitter
@@ -57,7 +58,7 @@ router.get("/twitter", passport.authenticate("twitter"));
 // router.get(
 //   "/twitter/redirect",
 //   passport.authenticate("twitter", {
-//     successRedirect: CLIENT_HOME_PAGE_URL,
+//     successRedirect: CLIENT_HOME_PAGE_URLXXX,
 //     failureRedirect: "/auth/login/failed"
 //   })
 // );
@@ -83,8 +84,10 @@ router.get('/google',
 router.get('/google/redirect',
   passport.authenticate('google', {
     // session: false,
-    successRedirect: process.env.CLIENT_HOME_PAGE_URL,
-    failureRedirect: process.env.CLIENT_HOME_PAGE_URL
+    successRedirect: "https://www.go-happy.shop",
+    failureRedirect: "https://www.go-happy.shop"
+    // successRedirect: process.env.CLIENT_HOME_PAGE_URL,
+    // failureRedirect: process.env.CLIENT_HOME_PAGE_URL
   }),
   function(req, res) {
     var token = authService.signToken(req, res);
@@ -119,7 +122,8 @@ router.get("/google/login/failed", (req, res) => {
 });
 
 router.get("/google/logout", (req, res) => {
-  const logoutURL = process.env.CLIENT_HOME_PAGE_URL + "/logout";
+  // const logoutURL = process.env.CLIENT_HOME_PAGE_URL + "/logout";
+  const logoutURL = "https://www.go-happy.shop" + "/logout";
   console.log("/google/logout logoutURL: ", logoutURL);
   req.logout();
   res.redirect(logoutURL);
