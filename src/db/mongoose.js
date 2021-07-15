@@ -1,10 +1,7 @@
 //jshint esversion:9
 // db.js
 const mongoose = require("mongoose");
-const config = require("config");
 const User = require('../models/user');
-// const db = config.get('mongoURI');
-// console.log('db config: ', db);
 let mongoURI =
   // "mongodb+srv://" +
   // process.env.MONGODB_ADMIN +

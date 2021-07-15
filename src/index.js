@@ -6,9 +6,6 @@ const fs = require("fs");
 
 const app = require("./app");
 
-const httpPort = 8081;
-const httpsPort = 8082;
-
 const httpsOptions = {
 	ca: fs.readFileSync("./private-files/certificates/multi_498484707.ca-bundle", "utf8"),
 	cert: fs.readFileSync("./private-files/certificates/multi_498484707.crt", "utf8"),
@@ -17,6 +14,9 @@ const httpsOptions = {
 
 const httpsServer = https.createServer(httpsOptions, app);
 const httpServer = http.createServer(app);
+
+const httpPort = process.env.http || 8081;
+const httpsPort = process.env.secureport || 8082;
 
 httpServer.listen(httpPort, () => {
 	console.log("httpPort: ", httpPort);
