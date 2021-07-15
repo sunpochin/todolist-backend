@@ -69,7 +69,7 @@ passport.deserializeUser((id, done) => {
 //   )
 // );
 
-const googlecbURL = process.env.FRONT_HOME + ":8081" + "/v1/auth/google";
+const googlecbURL = process.env.FRONT_HOME + "/v1/auth/google";
 console.log("process.env.FRONT_HOME: ", process.env.FRONT_HOME, ", googlecbURL: ", googlecbURL);
 // auth with google
 passport.use(new GoogleStrategy({
