@@ -17,9 +17,9 @@ const httpServer = http.createServer(app);
 
 const httpsPort = process.env.PORT || 8082;
 const httpPort = process.env.PORT || 8081;
-httpServer.listen(httpPort, () => {
-	console.log("httpPort: ", httpPort);
-});
+// httpServer.listen(httpPort, () => {
+// 	console.log("httpPort: ", httpPort);
+// });
 httpsServer.listen(httpsPort, () => {
 	console.log("httpSecure Port: ", httpsPort);
 });
