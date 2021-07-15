@@ -12,8 +12,12 @@ const httpsOptions = {
   key: fs.readFileSync("./private-files/certificates/yesido_me.key", "utf8"),
 };
 
-const httpsServer = https.createServer(httpsOptions, app);
-// const httpServer = http.createServer(app);
+const httpPort = process.env.PORT || 8081;
+const httpServer = http.createServer(app);
+httpServer.listen(httpPort, () => {
+	console.log("httpPort: ", httpPort);
+});
+
 // const httpServer = http.createServer((req, res) => {
 //   res.statusCode = 200;
 //   res.setHeader("Content-type", "application/json");
@@ -29,15 +33,18 @@ const httpsServer = https.createServer(httpsOptions, app);
 //   });
 // });
 
-const httpsPort = process.env.PORT || 8082;
-// secureServer.listen(httpsPort, () => {
-//   console.log("listen on : ", httpsPort);
-// });
+
 
 // const httpsPort = process.env.PORT || 8082;
-// httpServer.listen(httpPort, () => {
-// 	console.log("httpPort: ", httpPort);
+// // secureServer.listen(httpsPort, () => {
+// //   console.log("listen on : ", httpsPort);
+// // });
+//
+// // const httpsPort = process.env.PORT || 8082;
+// // httpServer.listen(httpPort, () => {
+// // 	console.log("httpPort: ", httpPort);
+// // });
+// const httpsServer = https.createServer(httpsOptions, app);
+// httpsServer.listen(httpsPort, () => {
+// 	console.log("httpSecure Port: ", httpsPort);
 // });
-httpsServer.listen(httpsPort, () => {
-	console.log("httpSecure Port: ", httpsPort);
-});
