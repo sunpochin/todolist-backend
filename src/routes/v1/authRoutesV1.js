@@ -119,6 +119,7 @@ router.get("/google/login/failed", (req, res) => {
 });
 
 router.get("/google/logout", (req, res) => {
+  console.log("/google/logout process.env.CLIENT_HOME_PAGE_URL: ", process.env.CLIENT_HOME_PAGE_URL);
   req.logout();
   res.redirect(process.env.CLIENT_HOME_PAGE_URL);
 });
