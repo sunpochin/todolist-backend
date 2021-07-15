@@ -15,12 +15,11 @@ const httpsOptions = {
 const httpsServer = https.createServer(httpsOptions, app);
 const httpServer = http.createServer(app);
 
-// const httpPort = process.env.PORT || 8081;
 const httpsPort = process.env.PORT || 8082;
-
-// httpServer.listen(process.env.PORT || httpPort, () => {
-// 	console.log("httpPort: ", httpPort);
-// });
+const httpPort = process.env.PORT || 8081;
+httpServer.listen(httpPort, () => {
+	console.log("httpPort: ", httpPort);
+});
 httpsServer.listen(httpsPort, () => {
 	console.log("httpSecure Port: ", httpsPort);
 });
