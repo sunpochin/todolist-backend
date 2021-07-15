@@ -101,41 +101,38 @@ const signupBody = async (from, req, res, next) => {
   }
 
   let retUser = await decideUser(email, req, res, next);
-  // if (existingUser) {
-  //   retUser = existingUser;
-  // }
   let hashedPassword = null;
   if (retUser) {
     if ("manual" === from) {
-      const errmsg = "User exists already, please login instead: " + existingUser;
+      const errmsg = "User exists already, please login instead: " + retUser;
       console.log(errmsg);
       res
         .status(422)
         .json({
           error: errmsg,
-          email: existingUser.email
+          email: retUser.email
         });
       return;
-    }
-    try {
-      const salt = 12;
-      hashedPassword = await bcrypt.hash(password, salt);
-    } catch (err) {
-      const error = new HttpError(
-        "Could not create user, please try again." + err,
-        500
-      );
-      // return next(error);
-    }
+    } else if ("google" === from) {
 
-    // hashedPassword = "A4oVCfspDvzxwGiKhHytwoqo45r4jRWFXcFGT01Bdxv_ggbsRvlDXzE5l5_CzhUHlcG2AJKYj1lCReaN";
-    //
-  } else if ("google" === from) {
+    }
+  } else {
     // retUser
     // todo: get google id from react client.
-  }
-
-  if (!retUser) {
+    if ("manual" === from) {
+      try {
+        const salt = 12;
+        hashedPassword = await bcrypt.hash(password, salt);
+      } catch (err) {
+        const error = new HttpError(
+          "Could not create user, please try again." + err,
+          500
+        );
+        // return next(error);
+      }
+    }
+    // hashedPassword = "A4oVCfspDvzxwGiKhHytwoqo45r4jRWFXcFGT01Bdxv_ggbsRvlDXzE5l5_CzhUHlcG2AJKYj1lCReaN";
+    //
     [retUser, retMsg] = await createUser(email, hashedPassword);
   }
 
