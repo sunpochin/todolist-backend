@@ -84,10 +84,10 @@ router.get('/google',
 router.get('/google/redirect',
   passport.authenticate('google', {
     // session: false,
-    successRedirect: "https://www.go-happy.shop",
-    failureRedirect: "https://www.go-happy.shop"
-    // successRedirect: process.env.CLIENT_HOME_PAGE_URL,
-    // failureRedirect: process.env.CLIENT_HOME_PAGE_URL
+    // successRedirect: "https://www.go-happy.shop",
+    // failureRedirect: "https://www.go-happy.shop"
+    successRedirect: process.env.CLIENT_HOME_PAGE_URL,
+    failureRedirect: process.env.CLIENT_HOME_PAGE_URL
   }),
   function(req, res) {
     var token = authService.signToken(req, res);
@@ -122,8 +122,7 @@ router.get("/google/login/failed", (req, res) => {
 });
 
 router.get("/google/logout", (req, res) => {
-  // const logoutURL = process.env.CLIENT_HOME_PAGE_URL + "/logout";
-  const logoutURL = "https://www.go-happy.shop" + "/logout";
+  const logoutURL = process.env.CLIENT_HOME_PAGE_URL + "/logout";
   console.log("/google/logout logoutURL: ", logoutURL);
   req.logout();
   res.redirect(logoutURL);

@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "start": "env-cmd -f ./private-files/config/atlas.env node src/index.js",
-    "app": "env-cmd -f ./private-files/config/atlas.env nodemon src/index.js",
+    "app": "env-cmd -f ./private-files/config/dev.env nodemon src/index.js",
     "circle": "jest --coverage",
     "cucumberjs": "./node_modules/.bin/cucumber-js",
     "test": "set NODE_ENV=test && env-cmd -f ./private-files/config/test.env jest --coverage",
