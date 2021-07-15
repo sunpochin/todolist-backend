@@ -7,7 +7,6 @@ const {
 } = require('google-auth-library');
 const oAuth2Client = new OAuth2Client(process.env.CLIENT_ID);
 
-// const CLIENT_HOME_PAGE_URL = "https://localhost:3000";
 const User = require("../../models/user.js");
 const usersController = require('../../controllers/users-controllers');
 

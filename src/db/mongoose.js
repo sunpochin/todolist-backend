@@ -2,14 +2,7 @@
 // db.js
 const mongoose = require("mongoose");
 const User = require('../models/user');
-let mongoURI =
-  // "mongodb+srv://" +
-  // process.env.MONGODB_ADMIN +
-  // ":" +
-  // process.env.MONGODB_PASSWORD +
-  process.env.MONGODB_URI;
-// const mongoURI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/api-test?retryWrites=false";
-// console.log('mongoURI: ', mongoURI);
+let mongoURI = process.env.MONGODB_URI;
 
 const connectDB = async () => {
   console.log("trying to connect mongoURI: ", mongoURI);

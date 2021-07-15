@@ -69,11 +69,13 @@ passport.deserializeUser((id, done) => {
 //   )
 // );
 
+const googlecbURL = process.env.FRONT_HOME + ":8081" + "/v1/auth/google";
+console.log("process.env.FRONT_HOME: ", process.env.FRONT_HOME, ", googlecbURL: ", googlecbURL);
 // auth with google
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:8081/v1/auth/google",
+    callbackURL: googlecbURL,
     userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
   },
   function(accessToken, refreshToken, profile, done) {
