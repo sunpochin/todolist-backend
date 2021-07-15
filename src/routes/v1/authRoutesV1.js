@@ -122,7 +122,7 @@ router.get("/google/logout", (req, res) => {
   const logoutURL = process.env.CLIENT_HOME_PAGE_URL + "/logout";
   console.log("/google/logout logoutURL: ", logoutURL);
   req.logout();
-  res.redirect();
+  res.redirect(logoutURL);
 });
 
 
