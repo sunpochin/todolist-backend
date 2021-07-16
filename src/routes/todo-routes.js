@@ -7,7 +7,6 @@ const todoControllers = require('../controllers/todo-controllers');
 const fileUpload = require('../middleware/file-upload');
 const checkAuth = require('../middleware/check-auth');
 const router = express.Router();
-
 router.use(checkAuth);
 
 // We are supposed to ONLY see all todos of the logging user, so Need to use uid from token here.
@@ -37,5 +36,7 @@ router.patch(
 );
 
 router.delete('/del/:pid', todoControllers.deleteTodo);
+
+router.post('/setlist', todoControllers.setList);
 
 module.exports = router;

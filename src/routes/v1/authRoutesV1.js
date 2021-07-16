@@ -2,6 +2,7 @@
 
 const router = require("express").Router();
 const passport = require("passport");
+const { dump } = require('dumper.js');
 const {
   OAuth2Client
 } = require('google-auth-library');
@@ -124,6 +125,7 @@ router.get("/google/login/failed", (req, res) => {
 router.get("/google/logout", (req, res) => {
   const logoutURL = process.env.CLIENT_HOME_PAGE_URL + "/logout";
   console.log("/google/logout logoutURL: ", logoutURL);
+  dump("/google/logout logoutURL: ", logoutURL);
   req.logout();
   res.redirect(logoutURL);
 });

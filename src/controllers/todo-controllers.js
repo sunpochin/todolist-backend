@@ -1,6 +1,9 @@
-//jshint esversion:6
+//jshint esversion:9
 
 const fs = require("fs");
+const {
+  dump
+} = require('dumper.js');
 
 const {
   validationResult
@@ -50,16 +53,16 @@ const getTodosByUserId = async (req, res, next) => {
     userWithTodos = await User.findById(userId).populate("todos");
     console.log('userWithTodos: ', userWithTodos);
   } catch (err) {
-		const errmsg = 'Fetching todos failed, please try again later.  ';
+    const errmsg = 'Fetching todos failed, please try again later.  ';
     // const error = new HttpError(
     //   errmsg + err,
     //   500
     // );
-		// return next(error);
-		res.status(404).json({
-			msg: errmsg
-		});
-		return;
+    // return next(error);
+    res.status(404).json({
+      msg: errmsg
+    });
+    return;
   }
 
   // if (!todos || todos.length === 0) {
@@ -71,7 +74,7 @@ const getTodosByUserId = async (req, res, next) => {
   //   res.status(404).json({
   //     msg: errmsg
   //   });
-	// 	return;
+  // 	return;
   // }
 
   res.json({
@@ -96,11 +99,13 @@ const createTodo = async (req, res, next) => {
   const {
     title,
     description,
+    order,
     creator
   } = req.body;
   const createTodo = new Todo({
     title,
     description,
+    order,
     creator
   });
 
@@ -114,7 +119,7 @@ const createTodo = async (req, res, next) => {
     const errMsg = "Creating todo failed" + err;
     console.log(errMsg);
     const error = new HttpError(
-       errMsg, 500);
+      errMsg, 500);
     return next(error);
   }
 
@@ -137,11 +142,9 @@ const createTodo = async (req, res, next) => {
     });
     await sess.commitTransaction();
   } catch (err) {
-    console.log("err: ", err);
-    const error = new HttpError(
-      "Creating todo failed, please try again.",
-      500
-    );
+    const msg = "Creating todo failed: " + err;
+    console.log("msg: ", msg);
+    const error = new HttpError(msg, 500);
     return next(error);
   }
 
@@ -261,8 +264,33 @@ const deleteTodo = async (req, res, next) => {
   });
 };
 
+const setList = async (req, res, next) => {
+  console.log("setList req.body: ", req.body);
+  dump(req.body);
+  const userId = req.params.uid;
+  console.log('getTodosByUserId, req.params: ', req.params);
+
+  let userWithTodos;
+  try {
+    userWithTodos = await User.findById(userId);
+
+  } catch (error) {
+
+  }
+  res.json();
+  // res.json({
+  //   todos: userWithTodos.todos.map((todo) =>
+  //     todo.toObject({
+  //       getters: true
+  //     })
+  //   ),
+  // });
+
+};
+
 exports.getTodoById = getTodoById;
 exports.getTodosByUserId = getTodosByUserId;
 exports.createTodo = createTodo;
 exports.updateTodo = updateTodo;
 exports.deleteTodo = deleteTodo;
+exports.setList = setList;
