@@ -1,6 +1,14 @@
 version: 2.1
 # example https://stackoverflow.com/a/65001814/720276
 
+orbs:
+  codecov: codecov/codecov@1.0.2
+  workflows:
+    upload-to-codecov:
+      jobs:
+      - checkout
+      - codecov/upload  
+
 jobs:
   run_jest_tests:
     docker:
