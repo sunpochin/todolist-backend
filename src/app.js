@@ -1,9 +1,12 @@
 //jshint esversion: 9
 
 // app.js
+const serverless = require('serverless-http');
+const express = require('express')
+const app = express()
+
 const db = require("./db/mongoose");
 const cors = require("cors");
-const express = require("express");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const cookieSession = require("cookie-session");
@@ -17,7 +20,6 @@ const mongoose = require("mongoose");
 
 const todoRoutes = require("./routes/todo-routes");
 const usersRoutes = require("./routes/users-routes");
-const app = express();
 
 db.connectDB();
 
@@ -77,3 +79,4 @@ app.use("/v1", usersRoutes);
 app.get("/", (req, res) => res.send("server by sunpochin@gmail.com"));
 
 module.exports = app;
+module.exports.handler = serverless(app);

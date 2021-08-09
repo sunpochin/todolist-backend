@@ -1,0 +1,19 @@
+# serverless.yml
+
+service: express-app
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+  region: ap-southeast-1
+
+functions:
+  app:
+    handler: src/app.handler
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'
+plugins:
+- serverless-offline
+- serverless-dotenv-plugin
