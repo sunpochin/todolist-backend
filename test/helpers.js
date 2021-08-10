@@ -3,7 +3,7 @@ const request = require("supertest");
 const bcrypt = require("bcryptjs");
 const db = require("mongoose");
 
-const app = require("../src/app");
+const app = require("../app");
 const User = require("../src/models/user");
 
 // let hashedPassword;
@@ -28,7 +28,7 @@ global.createTestUser = async () => {
 		email: "testuser@ab.com",
 		password: hashedPassword,
 	};
-	
+
 	createRet = await new User(userOne).save();
 	console.log("createRet: ", createRet);
 	return [userOne, createRet];
