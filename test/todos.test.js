@@ -1,8 +1,5 @@
 //jshint esversion:9
 const request = require("supertest");
-const app = require("../src/app");
-// const mongoose = require("../src/db/mongoose");
-// const User = require("../src/models/user");
 let userOne;
 let hashedPassword;
 beforeEach(async () => {

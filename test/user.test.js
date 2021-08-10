@@ -1,6 +1,6 @@
 //jshint esversion:9
 const request = require("supertest");
-const app = require("../src/app");
+const app = require("../app");
 const db = require("../src/db/mongoose");
 
 const User = require("../src/models/user");

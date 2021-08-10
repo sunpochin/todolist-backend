@@ -1,23 +1,25 @@
 //jshint esversion: 9
 
 // app.js
-const db = require("./db/mongoose");
+const serverless = require('serverless-http');
+const express = require('express')
+const app = express()
+
+const db = require("./src/db/mongoose");
 const cors = require("cors");
-const express = require("express");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const cookieSession = require("cookie-session");
 const cookieParser = require("cookie-parser"); // parse cookie
 const passport = require("passport");
-const passportSetup = require("./passport-setup");
-const authRoutesV1 = require("./routes/v1/authRoutesV1");
+const passportSetup = require("./src/passport-setup");
+const authRoutesV1 = require("./src/routes/v1/authRoutesV1");
 // const authRoutesV2 = require("./routes/v2/authRoutesV2");
 const mongoose = require("mongoose");
 // const keys = require("../private-files/config/keys");
 
-const todoRoutes = require("./routes/todo-routes");
-const usersRoutes = require("./routes/users-routes");
-const app = express();
+const todoRoutes = require("./src/routes/todo-routes");
+const usersRoutes = require("./src/routes/users-routes");
 
 db.connectDB();
 
@@ -77,3 +79,4 @@ app.use("/v1", usersRoutes);
 app.get("/", (req, res) => res.send("server by sunpochin@gmail.com"));
 
 module.exports = app;
+module.exports.handler = serverless(app);
