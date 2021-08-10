@@ -2,7 +2,7 @@
 // const https = require("https");
 const http = require("http");
 const fs = require("fs");
-const app = require("./app");
+const app = require("../app");
 
 // const httpsOptions = {
 //   ca: fs.readFileSync("./private-files/certificates/multi_498484707.ca-bundle", "utf8"),
