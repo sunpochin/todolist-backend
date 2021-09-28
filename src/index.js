@@ -16,33 +16,3 @@ httpServer.listen(httpPort, () => {
 	console.log("httpPort: ", httpPort);
 });
 
-// const httpServer = http.createServer((req, res) => {
-//   res.statusCode = 200;
-//   res.setHeader("Content-type", "application/json");
-//   res.end({
-//     "port": "http"
-//   });
-// });
-// const httpsServer = https.createServer((req, res) => {
-//   res.statusCode = 200;
-//   res.setHeader("Content-type", "application/json");
-//   res.end({
-//     "port": "secure port"
-//   });
-// });
-
-
-
-// const httpsPort = process.env.PORT || 8082;
-// // secureServer.listen(httpsPort, () => {
-// //   console.log("listen on : ", httpsPort);
-// // });
-//
-// // const httpsPort = process.env.PORT || 8082;
-// // httpServer.listen(httpPort, () => {
-// // 	console.log("httpPort: ", httpPort);
-// // });
-// const httpsServer = https.createServer(httpsOptions, app);
-// httpsServer.listen(httpsPort, () => {
-// 	console.log("httpSecure Port: ", httpsPort);
-// });
