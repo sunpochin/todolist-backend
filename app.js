@@ -77,7 +77,7 @@ app.use("/v1/auth", authRoutesV1);
 // app.use("/v2/auth", authRoutesV2);
 // app.use("/v1/todos", todoRoutes);
 app.use('/v1/items', itemsRoutes);
-app.use("/v1", usersRoutes);
+app.use("/v1/user", usersRoutes);
 app.get("/", (req, res) => res.send("server by sunpochin@gmail.com"));
 
 module.exports = app;

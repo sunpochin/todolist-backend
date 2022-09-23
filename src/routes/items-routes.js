@@ -7,12 +7,11 @@ const itemControllers = require('../controllers/item-controllers');
 const fileUpload = require('../middleware/file-upload');
 const checkAuth = require('../middleware/check-auth');
 const router = express.Router();
-router.use(checkAuth);
+// router.use(checkAuth);
 
 // We are supposed to ONLY see all todos of the logging user, so Need to use uid from token here.
-router.get('/items', itemControllers.getTodosByUserId);
-router.get('/list/:uid', itemControllers.getTodosByUserId);
-router.get('/:pid', itemControllers.getTodoById);
+router.get('/list', itemControllers.getAllItems);
+router.get('/deleteall', itemControllers.deleteAllItems);
 
 router.post(
 	'/add',
@@ -20,20 +19,6 @@ router.post(
 		check('title').not().isEmpty(),
 		// check('description').isLength({ min: 5 })
 	],
-	itemControllers.createTodo
+	itemControllers.createNewItem
 );
-
-router.patch(
-	'/update/:pid',
-	[
-		check('title').not().isEmpty(),
-		// check('description').isLength({ min: 5 })
-	],
-	itemControllers.updateTodo
-);
-
-router.delete('/del/:pid', itemControllers.deleteTodo);
-
-router.post('/setlist', itemControllers.setList);
-
 module.exports = router;

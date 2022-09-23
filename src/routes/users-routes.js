@@ -7,7 +7,7 @@ const usersController = require('../controllers/users-controllers');
 const fileUpload = require('../middleware/file-upload');
 const router = express.Router();
 
-router.get('/users', usersController.getUsers);
+router.get('/list', usersController.getUsers);
 
 router.post(
   '/signup',

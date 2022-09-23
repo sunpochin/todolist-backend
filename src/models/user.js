@@ -9,15 +9,16 @@ const findOrCreate = require("mongoose-findorcreate");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-	// name: { type: String, required: true },
-	// email: { type: String, required: true},
 	email: { type: String, required: true, unique: true },
 	googleId: String,
 	// email: String,
 	password: String,
-	// googleId: { type: String },
-	// image: { type: String, required: true },
-	todos: [{ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Todo" }],
+	items: [
+		{ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Item' },
+	],
+	// todos: [
+	// 	{ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Todo' },
+	// ],
 });
 
 userSchema.plugin(uniqueValidator);
