@@ -16,9 +16,14 @@ router.get('/deleteall', itemControllers.deleteAllItems);
 router.post(
 	'/add',
 	[
-		check('title').not().isEmpty(),
+		check('product_id').not().isEmpty(),
 		// check('description').isLength({ min: 5 })
 	],
 	itemControllers.createNewItem
+);
+router.get(
+	'/decrease/:product_id',
+	[check('product_id').not().isEmpty()],
+	itemControllers.decreaseItem
 );
 module.exports = router;

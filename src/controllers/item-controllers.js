@@ -24,9 +24,9 @@ const getAllItems = async (req, res, next) => {
 		);
 		return next(error);
 	}
-  console.log('result: ', items)
+	console.log('result: ', items);
 	res.json({
-    items
+		items,
 		// items: items.map((user) =>
 		// 	user.toObject({
 		// 		getters: true,
@@ -69,14 +69,13 @@ const createNewItem = async (req, res, next) => {
 		item = await Item.findOne(str);
 		// console.log('ret: ', item.quantity);
 		// if found, quantity+=1
+		const sess = await mongoose.startSession();
+		sess.startTransaction();
 		if (item !== null) {
 			const newQuan = parseInt(item.quantity) + 1;
 			console.log('newQuan: ', newQuan);
 
-			ret = await item.updateOne({ quantity: `${newQuan}` },);
-      const sess = await mongoose.startSession();
-			sess.startTransaction();
-			await sess.commitTransaction();
+			ret = await item.updateOne({ quantity: `${newQuan}` });
 
 			item = await Item.findOne(str);
 			console.log('item !== null: ', item);
@@ -88,8 +87,6 @@ const createNewItem = async (req, res, next) => {
 				// owner_id,
 			});
 			console.log('createItem: ', item);
-			const sess = await mongoose.startSession();
-			sess.startTransaction();
 			const ret = await item.save({
 				session: sess,
 			});
@@ -98,8 +95,8 @@ const createNewItem = async (req, res, next) => {
 			// await user.save({
 			// 	session: sess,
 			// });
-			await sess.commitTransaction();
 		}
+		await sess.commitTransaction();
 		// if (owner_id.match(/^[0-9a-fA-F]{24}$/))
 		// {
 		// 	// Yes, it's a valid ObjectId, proceed with `findById` call.
@@ -132,6 +129,67 @@ const createNewItem = async (req, res, next) => {
 	});
 };
 
+const decreaseItem = async (req, res, next) => {
+	console.log('decreaseItem req.body: ', req.params);
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		console.log('errors: ', errors.array());
+		return next(
+			new HttpError('Invalid inputs passed, please check your data.', 422)
+		);
+	}
+	const { title, product_id, owner_id } = req.params;
+	let item;
+	try {
+		const str = { product_id: `${product_id}` };
+		console.log('str: ', str);
+		item = await Item.findOne(str);
+		// console.log('ret: ', item.quantity);
+		// if found, quantity+=1
+		const sess = await mongoose.startSession();
+		sess.startTransaction();
+		if (item !== null) {
+			const newQuan = parseInt(item.quantity) - 1;
+			console.log('newQuan: ', newQuan);
+			if (newQuan <= 0) {
+        ret = await Item.deleteOne(str);
+			} else {
+				ret = await item.updateOne({ quantity: `${newQuan}` });
+				item = await Item.findOne(str);
+			}
+			console.log('item !== null: ', item);
+		} else {
+			// user.items.push(createItem);
+			// await user.save({
+			// 	session: sess,
+			// });
+		}
+		await sess.commitTransaction();
+		// if (owner_id.match(/^[0-9a-fA-F]{24}$/))
+		// {
+		// 	// Yes, it's a valid ObjectId, proceed with `findById` call.
+		// 	user = await User.findById(owner_id);
+		// 	// user = await User.findById(req.userData.userId);
+		// }
+		// console.log('user: ', user);
+	} catch (err) {
+		const errMsg = 'decrease item failed' + err;
+		console.log(errMsg);
+		const error = new HttpError(errMsg, 500);
+		return next(error);
+	}
+	// let user;
+	// if (!user) {
+	// 	const error = new HttpError('Could not find user for provided id.', 404);
+	// 	return next(error);
+	// }
+	// console.log(user);
+	res.status(201).json({
+		item,
+	});
+};
+
 exports.getAllItems = getAllItems;
 exports.createNewItem = createNewItem;
+exports.decreaseItem = decreaseItem;
 exports.deleteAllItems = deleteAllItems;
