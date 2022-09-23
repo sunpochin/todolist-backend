@@ -269,13 +269,10 @@ const setList = async (req, res, next) => {
   dump(req.body);
   const userId = req.params.uid;
   console.log('getTodosByUserId, req.params: ', req.params);
-
   let userWithTodos;
   try {
     userWithTodos = await User.findById(userId);
-
   } catch (error) {
-
   }
   res.json();
   // res.json({

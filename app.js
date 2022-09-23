@@ -18,9 +18,6 @@ const authRoutesV1 = require("./src/routes/v1/authRoutesV1");
 const mongoose = require("mongoose");
 // const keys = require("../private-files/config/keys");
 
-const todoRoutes = require("./src/routes/todo-routes");
-const usersRoutes = require("./src/routes/users-routes");
-
 db.connectDB();
 
 app.set("view engine", "ejs");
@@ -72,9 +69,14 @@ app.use(cors({
 // });
 //
 // set up routes
+// const todoRoutes = require('./src/routes/todo-routes');
+const itemsRoutes = require('./src/routes/items-routes');
+const usersRoutes = require('./src/routes/users-routes');
+
 app.use("/v1/auth", authRoutesV1);
 // app.use("/v2/auth", authRoutesV2);
-app.use("/v1/todos", todoRoutes);
+// app.use("/v1/todos", todoRoutes);
+app.use('/v1/items', itemsRoutes);
 app.use("/v1", usersRoutes);
 app.get("/", (req, res) => res.send("server by sunpochin@gmail.com"));
 
