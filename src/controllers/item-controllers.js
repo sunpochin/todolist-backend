@@ -62,20 +62,24 @@ const createNewItem = async (req, res, next) => {
 		);
 	}
 	const { title, product_id, owner_id } = req.body;
-	// if found, quantity+=1
 	let item;
-	let ret;
 	try {
 		const str = { product_id: `${product_id}` };
 		console.log('str: ', str);
 		item = await Item.findOne(str);
 		// console.log('ret: ', item.quantity);
+		// if found, quantity+=1
 		if (item !== null) {
 			const newQuan = parseInt(item.quantity) + 1;
-      console.log('newQuan: ', newQuan);
-			ret = await Item.updateOne({ quantity: `${newQuan}` });
+			console.log('newQuan: ', newQuan);
+
+			ret = await item.updateOne({ quantity: `${newQuan}` },);
+      const sess = await mongoose.startSession();
+			sess.startTransaction();
+			await sess.commitTransaction();
+
 			item = await Item.findOne(str);
-      console.log('item !== null: ', item);
+			console.log('item !== null: ', item);
 		} else {
 			item = new Item({
 				title,
