@@ -83,7 +83,7 @@ const createNewItem = async (req, res, next) => {
 			item = new Item({
 				title,
 				product_id,
-				quantity: 0,
+				quantity: 1,
 				// owner_id,
 			});
 			console.log('createItem: ', item);
